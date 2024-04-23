@@ -1,6 +1,6 @@
 const footerLinks = [
   ['Terms of Service', 'https://ndgo.io/tos'],
-  ['Privacy Policy', 'https://ndgo.io/privacy'],
+  ['Privacy Policy', 'https://ndgo.io/privacy']
 ] as const;
 
 export function AsideFooter(): JSX.Element {
