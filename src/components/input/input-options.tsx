@@ -49,7 +49,7 @@ const options: Readonly<Options> = [
   {
     name: 'Sensitive',
     iconName: 'EyeSlashIcon',
-    disabled: false,
+    disabled: false
   }
 ];
 

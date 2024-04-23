@@ -96,7 +96,7 @@ export function Input({
       updatedAt: null,
       userReplies: 0,
       userRewaves: [],
-      isSensitive: isWaveSensitive,
+      isSensitive: isWaveSensitive
     };
 
     await sleep(500);
