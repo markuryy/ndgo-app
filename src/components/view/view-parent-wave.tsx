@@ -35,7 +35,7 @@ export function ViewParentWave({
           This Wave was deleted by the Wave author.{' '}
           <a
             className='custom-underline text-main-accent'
-            href='https://help.twitter.com/rules-and-policies/notices-on-twitter'
+            href='https://help.ndgo.io/rules-and-policies/notices-on-twitter'
             target='_blank'
             rel='noreferrer'
           >

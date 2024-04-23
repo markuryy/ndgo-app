@@ -1,7 +1,7 @@
 const footerLinks = [
-  ['About', 'https://about.twitter.com'],
-  ['Privacy Policy', 'https://twitter.com/tos'],
-  ['Settings', 'https://twitter.com/settings']
+  ['About', 'https://about.ndgo.io'],
+  ['Privacy Policy', 'https://ndgo.io/tos'],
+  ['Settings', 'https://ndgo.io/settings']
 ] as const;
 
 export function LoginFooter(): JSX.Element {

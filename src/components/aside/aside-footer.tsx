@@ -1,11 +1,11 @@
 const footerLinks = [
-  ['Terms of Service', 'https://twitter.com/tos'],
-  ['Privacy Policy', 'https://twitter.com/privacy'],
-  ['Cookie Policy', 'https://support.twitter.com/articles/20170514'],
-  ['Accessibility', 'https://help.twitter.com/resources/accessibility'],
+  ['Terms of Service', 'https://ndgo.io/tos'],
+  ['Privacy Policy', 'https://ndgo.io/privacy'],
+  ['Cookie Policy', 'https://support.ndgo.io/articles/20170514'],
+  ['Accessibility', 'https://help.ndgo.io/resources/accessibility'],
   [
     'Ads Info',
-    'https://business.twitter.com/en/help/troubleshooting/how-twitter-ads-work.html'
+    'https://business.ndgo.io/en/help/troubleshooting/how-twitter-ads-work.html'
   ]
 ] as const;
 
