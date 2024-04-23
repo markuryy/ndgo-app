@@ -14,6 +14,9 @@ type WaveOption = {
   className: string;
   viewWave?: boolean;
   iconClassName: string;
+  isSensitive?: boolean;
+  isOwnerOrAdmin?: boolean;
+  onToggleSensitive?: () => void;
   onClick?: (...args: unknown[]) => unknown;
 };
 
@@ -26,6 +29,9 @@ export function WaveOption({
   className,
   viewWave,
   iconClassName,
+  isSensitive,
+  isOwnerOrAdmin,
+  onToggleSensitive,
   onClick
 }: WaveOption): JSX.Element {
   return (
@@ -52,6 +58,17 @@ export function WaveOption({
       </i>
       {!viewWave && (
         <NumberStats move={move as number} stats={stats as number} />
+      )}
+      {isOwnerOrAdmin && (
+        <button
+          className="text-sm hover:bg-gray-100 dark:hover:bg-gray-800 p-2 rounded-md"
+          onClick={(e) => {
+            e.preventDefault();
+            onToggleSensitive?.();
+          }}
+        >
+          {isSensitive ? 'Mark as Not Sensitive' : 'Mark as Sensitive'}
+        </button>
       )}
     </button>
   );

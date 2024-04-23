@@ -12,6 +12,7 @@ type NextImageProps = {
   imgClassName?: string;
   previewCount?: number;
   blurClassName?: string;
+  isBlurred?: boolean;
 } & ImageProps;
 
 /**
@@ -30,6 +31,7 @@ export function NextImage({
   imgClassName,
   previewCount,
   blurClassName,
+  isBlurred,
   ...rest
 }: NextImageProps): JSX.Element {
   const [loading, setLoading] = useState(!!useSkeleton);
@@ -46,7 +48,8 @@ export function NextImage({
                 'animate-pulse bg-light-secondary dark:bg-dark-secondary'
             : previewCount === 1
             ? '!h-auto !min-h-0 !w-auto !min-w-0 rounded-lg object-contain'
-            : 'object-cover'
+            : 'object-cover',
+          isBlurred ? 'blur' : ''
         )}
         src={src}
         width={width}

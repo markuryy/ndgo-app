@@ -48,7 +48,7 @@ const options: Readonly<Options> = [
   },
   {
     name: 'Sensitive',
-    iconName: 'EyeSlashIcon',
+    iconName: 'EyeIcon',
     disabled: false
   }
 ];
@@ -104,12 +104,13 @@ export function InputOptions({
           multiple
         />
         {filteredOptions.map(({ name, iconName, disabled }, index) => {
-          const actualIconName = name === 'Sensitive' ? (isSensitive ? 'EyeIcon' : 'EyeSlashIcon') : iconName;
+          const actualIconName = name === 'Sensitive' ? (isSensitive ? 'EyeSlashIcon' : 'EyeIcon') : iconName;
+          const handleClick = name === 'Media' ? onClick : name === 'Sensitive' ? onSensitiveClick : undefined;
           return (
             <Button
               key={name}
               className='accent-tab accent-bg-tab group relative rounded-full p-2 hover:bg-main-accent/10 active:bg-main-accent/20'
-              onClick={name === 'Sensitive' ? onSensitiveClick : undefined}
+              onClick={handleClick}
               disabled={disabled}
             >
               <HeroIcon className='h-5 w-5' iconName={actualIconName} />

@@ -186,7 +186,7 @@ export function Wave(wave: WaveProps): JSX.Element {
                     wave
                     imagesPreview={images}
                     previewCount={images.length}
-                    className={isSensitive && isBlurred ? 'blur' : ''}
+                    isBlurred={isSensitive && isBlurred}
                     onClick={toggleBlur}
                   />
                 )}

@@ -42,6 +42,10 @@
   body {
     @apply hover-animation bg-main-background font-twitter-chirp text-light-primary dark:text-dark-primary;
   }
+
+  .blur {
+    @apply blur-[4px];
+  }
 }
 
 @layer components {
@@ -95,6 +99,6 @@
   }
 
   .blur {
-    @apply blur-[8px];
+    @apply blur-[4px];
   }
 }

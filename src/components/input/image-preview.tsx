@@ -20,6 +20,7 @@ type ImagePreviewProps = {
   removeImage?: (targetId: string) => () => void;
   className?: string;
   onClick?: () => void;
+  isBlurred?: boolean;
 };
 
 const variants: MotionProps = {
@@ -47,6 +48,7 @@ export function ImagePreview({
   viewWave,
   previewCount,
   imagesPreview,
+  isBlurred,
   removeImage
 }: ImagePreviewProps): JSX.Element {
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -175,6 +177,7 @@ export function ImagePreview({
                   src={src}
                   alt={alt}
                   useSkeleton={isWave}
+                  isBlurred={isBlurred}
                 />
               )}
               {removeImage && (
