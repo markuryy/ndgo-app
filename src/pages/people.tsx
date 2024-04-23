@@ -15,7 +15,7 @@ import { MainContainer } from '@components/home/main-container';
 import { UserCard } from '@components/user/user-card';
 import { Loading } from '@components/ui/loading';
 import { Error } from '@components/ui/error';
-import { variants } from '@components/aside/aside-trends';
+import { AsideTrends } from '@components/aside/aside-trends';
 import type { ReactElement, ReactNode } from 'react';
 
 export default function People(): JSX.Element {
@@ -41,7 +41,7 @@ export default function People(): JSX.Element {
           <Error message='Something went wrong' />
         ) : (
           <>
-            <motion.div className='mt-0.5' {...variants}>
+            <motion.div className='mt-0.5' {...AsideTrends}>
               {data?.map((userData) => (
                 <UserCard {...userData} key={userData.id} follow />
               ))}
