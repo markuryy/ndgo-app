@@ -61,7 +61,7 @@ export function WaveOption({
       )}
       {isOwnerOrAdmin && (
         <button
-          className="text-sm hover:bg-gray-100 dark:hover:bg-gray-800 p-2 rounded-md"
+          className='text-sm hover:bg-gray-100 dark:hover:bg-gray-800 p-2 rounded-md'
           onClick={(e) => {
             e.preventDefault();
             onToggleSensitive?.();

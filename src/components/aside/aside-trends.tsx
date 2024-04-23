@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import cn from 'clsx';
+import { FaBug, FaEnvelope } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import type { MotionProps } from 'framer-motion';
-import { FaBug, FaEnvelope } from 'react-icons/fa';
 
 export const animationVariants: MotionProps = {
   initial: { opacity: 0 },
@@ -38,7 +38,7 @@ export function AsideTrends({ inTrendsPage }: AsideTrendsProps): JSX.Element {
         <div className='flex items-center gap-2'>
           <FaEnvelope className='text-lg text-primary' />
           <p className='text-sm font-medium text-light-secondary dark:text-dark-secondary'>
-            Found a bug? <Link href="mailto:help@ndgo.io"><a className='text-primary underline'>Let us know</a></Link>
+            Found a bug? <Link href='mailto:help@ndgo.io'><a className='text-primary underline'>Let us know</a></Link>
           </p>
         </div>
       </motion.div>
