@@ -45,6 +45,11 @@ const options: Readonly<Options> = [
     name: 'Location',
     iconName: 'MapPinIcon',
     disabled: true
+  },
+  {
+    name: 'Sensitive',
+    iconName: 'EyeSlashIcon',
+    disabled: false,
   }
 ];
 
@@ -55,6 +60,8 @@ type InputOptionsProps = {
   inputLength: number;
   isValidWave: boolean;
   isCharLimitExceeded: boolean;
+  isSensitive: boolean;
+  onSensitiveClick: () => void;
   handleImageUpload: (
     e: ChangeEvent<HTMLInputElement> | ClipboardEvent<HTMLTextAreaElement>
   ) => void;
@@ -67,6 +74,8 @@ export function InputOptions({
   inputLength,
   isValidWave,
   isCharLimitExceeded,
+  isSensitive,
+  onSensitiveClick,
   handleImageUpload
 }: InputOptionsProps): JSX.Element {
   const inputFileRef = useRef<HTMLInputElement>(null);
@@ -94,18 +103,20 @@ export function InputOptions({
           ref={inputFileRef}
           multiple
         />
-        {filteredOptions.map(({ name, iconName, disabled }, index) => (
-          <Button
-            className='accent-tab accent-bg-tab group relative rounded-full p-2 
-                       hover:bg-main-accent/10 active:bg-main-accent/20'
-            onClick={index === 0 ? onClick : undefined}
-            disabled={disabled}
-            key={name}
-          >
-            <HeroIcon className='h-5 w-5' iconName={iconName} />
-            <ToolTip tip={name} modal={modal} />
-          </Button>
-        ))}
+        {filteredOptions.map(({ name, iconName, disabled }, index) => {
+          const actualIconName = name === 'Sensitive' ? (isSensitive ? 'EyeIcon' : 'EyeSlashIcon') : iconName;
+          return (
+            <Button
+              key={name}
+              className='accent-tab accent-bg-tab group relative rounded-full p-2 hover:bg-main-accent/10 active:bg-main-accent/20'
+              onClick={name === 'Sensitive' ? onSensitiveClick : undefined}
+              disabled={disabled}
+            >
+              <HeroIcon className='h-5 w-5' iconName={actualIconName} />
+              <ToolTip tip={name} modal={modal} />
+            </Button>
+          );
+        })}
       </div>
       <div className='flex items-center gap-4'>
         <motion.div

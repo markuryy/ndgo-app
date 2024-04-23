@@ -13,6 +13,7 @@ export type Wave = {
   updatedAt: Timestamp | null;
   userReplies: number;
   userRewaves: string[];
+  isSensitive: boolean;
 };
 
 export type WaveWithUser = Wave & { user: User };

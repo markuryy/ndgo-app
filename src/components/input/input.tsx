@@ -31,6 +31,7 @@ type InputProps = {
   parent?: { id: string; username: string };
   disabled?: boolean;
   children?: ReactNode;
+  isSensitive?: boolean;
   replyModal?: boolean;
   closeModal?: () => void;
 };
@@ -47,13 +48,17 @@ export function Input({
   disabled,
   children,
   replyModal,
-  closeModal
+  closeModal,
+  isSensitive
 }: InputProps): JSX.Element {
   const [selectedImages, setSelectedImages] = useState<FilesWithId>([]);
   const [imagesPreview, setImagesPreview] = useState<ImagesPreview>([]);
   const [inputValue, setInputValue] = useState('');
   const [loading, setLoading] = useState(false);
   const [visited, setVisited] = useState(false);
+
+  const [showSensitiveConfirm, setShowSensitiveConfirm] = useState(false);
+  const [isWaveSensitive, setIsWaveSensitive] = useState(false);
 
   const { user, isAdmin } = useAuth();
   const { name, username, photoURL } = user as User;
@@ -90,7 +95,8 @@ export function Input({
       createdAt: serverTimestamp(),
       updatedAt: null,
       userReplies: 0,
-      userRewaves: []
+      userRewaves: [],
+      isSensitive: isWaveSensitive,
     };
 
     await sleep(500);
@@ -178,6 +184,10 @@ export function Input({
     cleanImage();
 
     inputRef.current?.blur();
+  };
+
+  const handleSensitiveClick = () => {
+    setIsWaveSensitive(!isWaveSensitive);
   };
 
   const handleChange = ({
@@ -277,6 +287,8 @@ export function Input({
                 isValidWave={isValidWave}
                 isCharLimitExceeded={isCharLimitExceeded}
                 handleImageUpload={handleImageUpload}
+                isSensitive={isWaveSensitive}
+                onSensitiveClick={handleSensitiveClick}
               />
             )}
           </AnimatePresence>
