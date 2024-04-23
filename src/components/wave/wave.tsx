@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { AnimatePresence, motion } from 'framer-motion';
 import cn from 'clsx';
 import { useAuth } from '@lib/context/auth-context';
+import { useBlur } from '@lib/context/blur-context';
 import { useModal } from '@lib/hooks/useModal';
 import { delayScroll } from '@lib/utils';
 import { Modal } from '@components/modal/modal';
@@ -48,6 +49,7 @@ export function Wave(wave: WaveProps): JSX.Element {
     parentWave,
     userReplies,
     userRewaves,
+    isSensitive,
     user: waveUserData
   } = wave;
 
@@ -73,6 +75,8 @@ export function Wave(wave: WaveProps): JSX.Element {
 
   const reply = !!parent;
   const waveIsRewaveed = userRewaves.includes(profileId ?? '');
+
+  const { isBlurred, toggleBlur } = useBlur();
 
   return (
     <motion.article
@@ -182,6 +186,8 @@ export function Wave(wave: WaveProps): JSX.Element {
                     wave
                     imagesPreview={images}
                     previewCount={images.length}
+                    className={isSensitive && isBlurred ? 'blur' : ''}
+                    onClick={toggleBlur}
                   />
                 )}
                 {!modal && (

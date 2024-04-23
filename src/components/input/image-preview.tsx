@@ -18,6 +18,8 @@ type ImagePreviewProps = {
   previewCount: number;
   imagesPreview: ImagesPreview;
   removeImage?: (targetId: string) => () => void;
+  className?: string;
+  onClick?: () => void;
 };
 
 const variants: MotionProps = {
