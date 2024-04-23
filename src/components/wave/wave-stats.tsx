@@ -91,9 +91,9 @@ export function WaveStats({
         )}
       >
         <WaveOption
-          className='hover:text-accent-blue focus-visible:text-accent-blue'
-          iconClassName='group-hover:bg-accent-blue/10 group-active:bg-accent-blue/20 
-                         group-focus-visible:bg-accent-blue/10 group-focus-visible:ring-accent-blue/80'
+          className='hover:text-accent-indigo focus-visible:text-accent-indigo'
+          iconClassName='group-hover:bg-accent-indigo/10 group-active:bg-accent-indigo/20 
+                         group-focus-visible:bg-accent-indigo/10 group-focus-visible:ring-accent-indigo/80'
           tip='Reply'
           move={replyMove}
           stats={currentReplies}
@@ -141,9 +141,9 @@ export function WaveStats({
         <WaveShare userId={userId} waveId={waveId} viewWave={viewWave} />
         {isOwner && (
           <WaveOption
-            className='hover:text-accent-blue focus-visible:text-accent-blue'
-            iconClassName='group-hover:bg-accent-blue/10 group-active:bg-accent-blue/20 
-                           group-focus-visible:bg-accent-blue/10 group-focus-visible:ring-accent-blue/80'
+            className='hover:text-accent-indigo focus-visible:text-accent-indigo'
+            iconClassName='group-hover:bg-accent-indigo/10 group-active:bg-accent-indigo/20 
+                           group-focus-visible:bg-accent-indigo/10 group-focus-visible:ring-accent-indigo/80'
             tip='Analytics'
             iconName='ChartPieIcon'
             disabled

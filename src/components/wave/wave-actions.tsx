@@ -191,15 +191,15 @@ export function WaveActions({
               as={Button}
               className={cn(
                 `main-tab group group absolute top-2 right-2 p-2 
-                 hover:bg-accent-blue/10 focus-visible:bg-accent-blue/10
-                 focus-visible:!ring-accent-blue/80 active:bg-accent-blue/20`,
-                open && 'bg-accent-blue/10 [&>div>svg]:text-accent-blue'
+                 hover:bg-accent-indigo/10 focus-visible:bg-accent-indigo/10
+                 focus-visible:!ring-accent-indigo/80 active:bg-accent-indigo/20`,
+                open && 'bg-accent-indigo/10 [&>div>svg]:text-accent-indigo'
               )}
             >
               <div className='group relative'>
                 <HeroIcon
-                  className='h-5 w-5 text-light-secondary group-hover:text-accent-blue
-                             group-focus-visible:text-accent-blue dark:text-dark-secondary/80'
+                  className='h-5 w-5 text-light-secondary group-hover:text-accent-indigo
+                             group-focus-visible:text-accent-indigo dark:text-dark-secondary/80'
                   iconName='EllipsisHorizontalIcon'
                 />
                 {!open && <ToolTip tip='More' />}

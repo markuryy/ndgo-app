@@ -25,6 +25,7 @@ module.exports = {
         'main-accent': 'rgb(var(--main-accent) / <alpha-value>)',
         'accent-yellow': 'rgb(var(--accent-yellow) / <alpha-value>)',
         'accent-blue': 'rgb(var(--accent-blue) / <alpha-value>)',
+        'accent-indigo': 'rgb(var(--accent-indigo) / <alpha-value>)',
         'accent-pink': 'rgb(var(--accent-pink) / <alpha-value>)',
         'accent-purple': 'rgb(var(--accent-purple) / <alpha-value>)',
         'accent-orange': 'rgb(var(--accent-orange) / <alpha-value>)',

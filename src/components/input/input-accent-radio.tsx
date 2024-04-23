@@ -12,7 +12,7 @@ type InputAccentData = Record<Accent, string>;
 const InputColors: Readonly<InputAccentData> = {
   yellow:
     'bg-accent-yellow hover:ring-accent-yellow/10 active:ring-accent-yellow/20',
-  blue: 'bg-accent-blue hover:ring-accent-blue/10 active:ring-accent-blue/20',
+  blue: 'bg-accent-blue hover:ring-accent-blue/10 active:ring-accent-indigo/20',
   pink: 'bg-accent-pink hover:ring-accent-pink/10 active:ring-accent-pink/20',
   purple:
     'bg-accent-purple hover:ring-accent-purple/10 active:ring-accent-purple/20',
