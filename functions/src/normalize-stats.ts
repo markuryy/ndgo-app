@@ -1,18 +1,18 @@
 import { functions, firestore, regionalFunctions } from './lib/utils';
-import { tweetConverter, bookmarkConverter } from './types';
-import type { Tweet } from './types';
+import { waveConverter, bookmarkConverter } from './types';
+import type { Wave } from './types';
 
 export const normalizeStats = regionalFunctions.firestore
-  .document('tweets/{tweetId}')
+  .document('waves/{waveId}')
   .onDelete(async (snapshot): Promise<void> => {
-    const tweetId = snapshot.id;
-    const tweetData = snapshot.data() as Tweet;
+    const waveId = snapshot.id;
+    const waveData = snapshot.data() as Wave;
 
-    functions.logger.info(`Normalizing stats from tweet ${tweetId}`);
+    functions.logger.info(`Normalizing stats from wave ${waveId}`);
 
-    const { userRetweets, userLikes } = tweetData;
+    const { userRewaves, userLikes } = waveData;
 
-    const usersStatsToDelete = new Set([...userRetweets, ...userLikes]);
+    const usersStatsToDelete = new Set([...userRewaves, ...userLikes]);
 
     const batch = firestore().batch();
 
@@ -21,17 +21,17 @@ export const normalizeStats = regionalFunctions.firestore
 
       const userStatsRef = firestore()
         .doc(`users/${userId}/stats/stats`)
-        .withConverter(tweetConverter);
+        .withConverter(waveConverter);
 
       batch.update(userStatsRef, {
-        tweets: firestore.FieldValue.arrayRemove(tweetId),
-        likes: firestore.FieldValue.arrayRemove(tweetId)
+        waves: firestore.FieldValue.arrayRemove(waveId),
+        likes: firestore.FieldValue.arrayRemove(waveId)
       });
     });
 
     const bookmarksQuery = firestore()
       .collectionGroup('bookmarks')
-      .where('id', '==', tweetId)
+      .where('id', '==', waveId)
       .withConverter(bookmarkConverter);
 
     const docsSnap = await bookmarksQuery.get();
@@ -45,5 +45,5 @@ export const normalizeStats = regionalFunctions.firestore
 
     await batch.commit();
 
-    functions.logger.info(`Normalizing stats for tweet ${tweetId} is done`);
+    functions.logger.info(`Normalizing stats for wave ${waveId} is done`);
   });

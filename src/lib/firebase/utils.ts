@@ -18,7 +18,7 @@ import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { db, storage } from './app';
 import {
   usersCollection,
-  tweetsCollection,
+  wavesCollection,
   userStatsCollection,
   userBookmarksCollection
 } from './collections';
@@ -74,15 +74,15 @@ export async function updateUsername(
   });
 }
 
-export async function managePinnedTweet(
+export async function managePinnedWave(
   type: 'pin' | 'unpin',
   userId: string,
-  tweetId: string
+  waveId: string
 ): Promise<void> {
   const userRef = doc(usersCollection, userId);
   await updateDoc(userRef, {
     updatedAt: serverTimestamp(),
-    pinnedTweet: type === 'pin' ? tweetId : null
+    pinnedWave: type === 'pin' ? waveId : null
   });
 }
 
@@ -119,8 +119,8 @@ export async function manageFollow(
   await batch.commit();
 }
 
-export async function removeTweet(tweetId: string): Promise<void> {
-  const userRef = doc(tweetsCollection, tweetId);
+export async function removeWave(waveId: string): Promise<void> {
+  const userRef = doc(wavesCollection, waveId);
   await deleteDoc(userRef);
 }
 
@@ -149,27 +149,27 @@ export async function uploadImages(
 
 export async function manageReply(
   type: 'increment' | 'decrement',
-  tweetId: string
+  waveId: string
 ): Promise<void> {
-  const tweetRef = doc(tweetsCollection, tweetId);
+  const waveRef = doc(wavesCollection, waveId);
 
   try {
-    await updateDoc(tweetRef, {
+    await updateDoc(waveRef, {
       userReplies: increment(type === 'increment' ? 1 : -1),
       updatedAt: serverTimestamp()
     });
   } catch {
-    // do nothing, because parent tweet was already deleted
+    // do nothing, because parent wave was already deleted
   }
 }
 
-export async function manageTotalTweets(
+export async function manageTotalWaves(
   type: 'increment' | 'decrement',
   userId: string
 ): Promise<void> {
   const userRef = doc(usersCollection, userId);
   await updateDoc(userRef, {
-    totalTweets: increment(type === 'increment' ? 1 : -1),
+    totalWaves: increment(type === 'increment' ? 1 : -1),
     updatedAt: serverTimestamp()
   });
 }
@@ -185,33 +185,33 @@ export async function manageTotalPhotos(
   });
 }
 
-export function manageRetweet(
-  type: 'retweet' | 'unretweet',
+export function manageRewave(
+  type: 'rewave' | 'unrewave',
   userId: string,
-  tweetId: string
+  waveId: string
 ) {
   return async (): Promise<void> => {
     const batch = writeBatch(db);
 
-    const tweetRef = doc(tweetsCollection, tweetId);
+    const waveRef = doc(wavesCollection, waveId);
     const userStatsRef = doc(userStatsCollection(userId), 'stats');
 
-    if (type === 'retweet') {
-      batch.update(tweetRef, {
-        userRetweets: arrayUnion(userId),
+    if (type === 'rewave') {
+      batch.update(waveRef, {
+        userRewaves: arrayUnion(userId),
         updatedAt: serverTimestamp()
       });
       batch.update(userStatsRef, {
-        tweets: arrayUnion(tweetId),
+        waves: arrayUnion(waveId),
         updatedAt: serverTimestamp()
       });
     } else {
-      batch.update(tweetRef, {
-        userRetweets: arrayRemove(userId),
+      batch.update(waveRef, {
+        userRewaves: arrayRemove(userId),
         updatedAt: serverTimestamp()
       });
       batch.update(userStatsRef, {
-        tweets: arrayRemove(tweetId),
+        waves: arrayRemove(waveId),
         updatedAt: serverTimestamp()
       });
     }
@@ -223,30 +223,30 @@ export function manageRetweet(
 export function manageLike(
   type: 'like' | 'unlike',
   userId: string,
-  tweetId: string
+  waveId: string
 ) {
   return async (): Promise<void> => {
     const batch = writeBatch(db);
 
     const userStatsRef = doc(userStatsCollection(userId), 'stats');
-    const tweetRef = doc(tweetsCollection, tweetId);
+    const waveRef = doc(wavesCollection, waveId);
 
     if (type === 'like') {
-      batch.update(tweetRef, {
+      batch.update(waveRef, {
         userLikes: arrayUnion(userId),
         updatedAt: serverTimestamp()
       });
       batch.update(userStatsRef, {
-        likes: arrayUnion(tweetId),
+        likes: arrayUnion(waveId),
         updatedAt: serverTimestamp()
       });
     } else {
-      batch.update(tweetRef, {
+      batch.update(waveRef, {
         userLikes: arrayRemove(userId),
         updatedAt: serverTimestamp()
       });
       batch.update(userStatsRef, {
-        likes: arrayRemove(tweetId),
+        likes: arrayRemove(waveId),
         updatedAt: serverTimestamp()
       });
     }
@@ -258,13 +258,13 @@ export function manageLike(
 export async function manageBookmark(
   type: 'bookmark' | 'unbookmark',
   userId: string,
-  tweetId: string
+  waveId: string
 ): Promise<void> {
-  const bookmarkRef = doc(userBookmarksCollection(userId), tweetId);
+  const bookmarkRef = doc(userBookmarksCollection(userId), waveId);
 
   if (type === 'bookmark') {
     const bookmarkData: WithFieldValue<Bookmark> = {
-      id: tweetId,
+      id: waveId,
       createdAt: serverTimestamp()
     };
     await setDoc(bookmarkRef, bookmarkData);

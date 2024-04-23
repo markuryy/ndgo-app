@@ -8,7 +8,7 @@ import { useCollection } from '@lib/hooks/useCollection';
 import { useArrayDocument } from '@lib/hooks/useArrayDocument';
 import { clearAllBookmarks } from '@lib/firebase/utils';
 import {
-  tweetsCollection,
+  wavesCollection,
   userBookmarksCollection
 } from '@lib/firebase/collections';
 import { HomeLayout, ProtectedLayout } from '@components/layout/common-layout';
@@ -18,8 +18,8 @@ import { MainHeader } from '@components/home/main-header';
 import { MainContainer } from '@components/home/main-container';
 import { Modal } from '@components/modal/modal';
 import { ActionModal } from '@components/modal/action-modal';
-import { Tweet } from '@components/tweet/tweet';
-import { StatsEmpty } from '@components/tweet/stats-empty';
+import { Wave } from '@components/wave/wave';
+import { StatsEmpty } from '@components/wave/stats-empty';
 import { Button } from '@components/ui/button';
 import { ToolTip } from '@components/ui/tooltip';
 import { HeroIcon } from '@components/ui/hero-icon';
@@ -38,14 +38,14 @@ export default function Bookmarks(): JSX.Element {
     { allowNull: true }
   );
 
-  const tweetIds = useMemo(
+  const waveIds = useMemo(
     () => bookmarksRef?.map(({ id }) => id) ?? [],
     [bookmarksRef]
   );
 
-  const { data: tweetData, loading: tweetLoading } = useArrayDocument(
-    tweetIds,
-    tweetsCollection,
+  const { data: waveData, loading: waveLoading } = useArrayDocument(
+    waveIds,
+    wavesCollection,
     { includeUser: true }
   );
 
@@ -65,7 +65,7 @@ export default function Bookmarks(): JSX.Element {
       >
         <ActionModal
           title='Clear all Bookmarks?'
-          description='This can’t be undone and you’ll remove all Tweets you’ve added to your Bookmarks.'
+          description='This can’t be undone and you’ll remove all Waves you’ve added to your Bookmarks.'
           mainBtnClassName='bg-accent-red hover:bg-accent-red/90 active:bg-accent-red/75 accent-tab 
                             focus-visible:bg-accent-red/90'
           mainBtnLabel='Clear'
@@ -94,18 +94,18 @@ export default function Bookmarks(): JSX.Element {
         </Button>
       </MainHeader>
       <section className='mt-0.5'>
-        {bookmarksRefLoading || tweetLoading ? (
+        {bookmarksRefLoading || waveLoading ? (
           <Loading className='mt-5' />
         ) : !bookmarksRef ? (
           <StatsEmpty
-            title='Save Tweets for later'
-            description='Don’t let the good ones fly away! Bookmark Tweets to easily find them again in the future.'
+            title='Save Waves for later'
+            description='Don’t let the good ones fly away! Bookmark Waves to easily find them again in the future.'
             imageData={{ src: '/assets/no-bookmarks.png', alt: 'No bookmarks' }}
           />
         ) : (
           <AnimatePresence mode='popLayout'>
-            {tweetData?.map((tweet) => (
-              <Tweet {...tweet} key={tweet.id} />
+            {waveData?.map((wave) => (
+              <Wave {...wave} key={wave.id} />
             ))}
           </AnimatePresence>
         )}

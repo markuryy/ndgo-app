@@ -1,6 +1,6 @@
 import { collection } from 'firebase/firestore';
 import { userConverter } from '@lib/types/user';
-import { tweetConverter } from '@lib/types/tweet';
+import { waveConverter } from '@lib/types/wave';
 import { bookmarkConverter } from '@lib/types/bookmark';
 import { statsConverter } from '@lib/types/stats';
 import { db } from './app';
@@ -12,8 +12,8 @@ export const usersCollection = collection(db, 'users').withConverter(
   userConverter
 );
 
-export const tweetsCollection = collection(db, 'tweets').withConverter(
-  tweetConverter
+export const wavesCollection = collection(db, 'waves').withConverter(
+  waveConverter
 );
 
 export function userBookmarksCollection(

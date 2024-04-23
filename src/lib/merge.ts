@@ -4,10 +4,10 @@ type DataWithDate<T> = T & { createdAt: Timestamp };
 
 export function mergeData<T>(
   sortData: boolean,
-  ...tweets: (DataWithDate<T>[] | null)[]
+  ...waves: (DataWithDate<T>[] | null)[]
 ): DataWithDate<T>[] | null {
-  const validData = tweets.filter((tweet) => tweet) as DataWithDate<T>[][];
-  const mergeData = validData.reduce((acc, tweet) => [...acc, ...tweet], []);
+  const validData = waves.filter((wave) => wave) as DataWithDate<T>[][];
+  const mergeData = validData.reduce((acc, wave) => [...acc, ...wave], []);
 
   return mergeData.length
     ? sortData

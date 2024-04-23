@@ -2,7 +2,7 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     function isAdmin() {
-      return request.auth.uid == 'Twt0A27bx9YcG4vu3RTsR7ifJzf2';
+      return request.auth.uid == 'Jc0nC2lWHRe6YZ8nNm22p9lNKtJ2';
     }
 
     function isAuthorized(userId) {
@@ -17,7 +17,7 @@ service cloud.firestore {
       return (images is list && images.size() <= 4) || images == null;
     }
     
-    match /tweets/{tweetId} {
+    match /waves/{waveId} {
       allow read, update: if request.auth != null;
       allow create: if isAuthorized(request.resource.data.createdBy)
                        && isValidText(request.resource.data.text)

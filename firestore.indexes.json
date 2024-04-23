@@ -1,7 +1,7 @@
 {
   "indexes": [
     {
-      "collectionGroup": "tweets",
+      "collectionGroup": "waves",
       "queryScope": "COLLECTION",
       "fields": [
         {
@@ -15,7 +15,7 @@
       ]
     },
     {
-      "collectionGroup": "tweets",
+      "collectionGroup": "waves",
       "queryScope": "COLLECTION",
       "fields": [
         {
@@ -29,7 +29,7 @@
       ]
     },
     {
-      "collectionGroup": "tweets",
+      "collectionGroup": "waves",
       "queryScope": "COLLECTION",
       "fields": [
         {
@@ -43,7 +43,7 @@
       ]
     },
     {
-      "collectionGroup": "tweets",
+      "collectionGroup": "waves",
       "queryScope": "COLLECTION",
       "fields": [
         {
@@ -57,7 +57,7 @@
       ]
     },
     {
-      "collectionGroup": "tweets",
+      "collectionGroup": "waves",
       "queryScope": "COLLECTION",
       "fields": [
         {
@@ -71,11 +71,11 @@
       ]
     },
     {
-      "collectionGroup": "tweets",
+      "collectionGroup": "waves",
       "queryScope": "COLLECTION",
       "fields": [
         {
-          "fieldPath": "userRetweets",
+          "fieldPath": "userRewaves",
           "arrayConfig": "CONTAINS"
         },
         {

@@ -36,7 +36,7 @@ export default async function placeIdEndpoint(
 
   if (formattedTrends) {
     const filteredTrends = formattedTrends.filter(
-      ({ tweet_volume }) => tweet_volume
+      ({ wave_volume }) => wave_volume
     ) as FilteredTrends;
 
     formattedTrends = filteredTrends
@@ -44,7 +44,7 @@ export default async function placeIdEndpoint(
         ...rest,
         url: url.replace(/http.*.com/, '')
       }))
-      .sort((a, b) => b.tweet_volume - a.tweet_volume);
+      .sort((a, b) => b.wave_volume - a.wave_volume);
 
     if (limitParam) formattedTrends = formattedTrends.slice(0, limitParam);
   }

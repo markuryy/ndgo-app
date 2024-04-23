@@ -1,12 +1,12 @@
 import cn from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
-import { StatsEmpty } from '@components/tweet/stats-empty';
+import { StatsEmpty } from '@components/wave/stats-empty';
 import { Loading } from '@components/ui/loading';
 import { variants } from '@components/user/user-header';
 import { UserCard } from './user-card';
 import type { User } from '@lib/types/user';
-import type { StatsType } from '@components/view/view-tweet-stats';
-import type { StatsEmptyProps } from '@components/tweet/stats-empty';
+import type { StatsType } from '@components/view/view-wave-stats';
+import type { StatsEmptyProps } from '@components/wave/stats-empty';
 
 type FollowType = 'following' | 'followers';
 
@@ -22,16 +22,16 @@ type UserCardsProps = {
 type NoStatsData = Record<CombinedTypes, StatsEmptyProps>;
 
 const allNoStatsData: Readonly<NoStatsData> = {
-  retweets: {
-    title: 'Amplify Tweets you like',
-    imageData: { src: '/assets/no-retweets.png', alt: 'No retweets' },
+  rewaves: {
+    title: 'Amplify Waves you like',
+    imageData: { src: '/assets/no-rewaves.png', alt: 'No rewaves' },
     description:
-      'Share someone else’s Tweet on your timeline by Retweeting it. When you do, it’ll show up here.'
+      'Share someone else’s Wave on your timeline by Rewaveing it. When you do, it’ll show up here.'
   },
   likes: {
-    title: 'No Tweet Likes yet',
+    title: 'No Wave Likes yet',
     imageData: { src: '/assets/no-likes.png', alt: 'No likes' },
-    description: 'When you like a Tweet, it’ll show up here.'
+    description: 'When you like a Wave, it’ll show up here.'
   },
   following: {
     title: 'Be in the know',
@@ -42,7 +42,7 @@ const allNoStatsData: Readonly<NoStatsData> = {
     title: 'Looking for followers?',
     imageData: { src: '/assets/no-followers.png', alt: 'No followers' },
     description:
-      'When someone follows this account, they’ll show up here. Tweeting and interacting with others helps boost followers.'
+      'When someone follows this account, they’ll show up here. Waveing and interacting with others helps boost followers.'
   }
 };
 
@@ -53,7 +53,7 @@ export function UserCards({
   loading
 }: UserCardsProps): JSX.Element {
   const noStatsData = allNoStatsData[type];
-  const modal = ['retweets', 'likes'].includes(type);
+  const modal = ['rewaves', 'likes'].includes(type);
 
   return (
     <section

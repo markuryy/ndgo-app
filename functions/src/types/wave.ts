@@ -12,7 +12,7 @@ export type ImagesPreview = (ImageData & {
   id: number;
 })[];
 
-export type Tweet = {
+export type Wave = {
   text: string | null;
   images: ImagesPreview | null;
   parent: { id: string; username: string } | null;
@@ -21,16 +21,16 @@ export type Tweet = {
   createdAt: Timestamp;
   updatedAt: Timestamp | null;
   userReplies: number;
-  userRetweets: string[];
+  userRewaves: string[];
 };
 
-export const tweetConverter: FirestoreDataConverter<Tweet> = {
-  toFirestore(tweet) {
-    return { ...tweet };
+export const waveConverter: FirestoreDataConverter<Wave> = {
+  toFirestore(wave) {
+    return { ...wave };
   },
   fromFirestore(snapshot) {
     const data = snapshot.data();
 
-    return { ...data } as Tweet;
+    return { ...data } as Wave;
   }
 };

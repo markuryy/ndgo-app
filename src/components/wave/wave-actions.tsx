@@ -7,13 +7,13 @@ import cn from 'clsx';
 import { toast } from 'react-hot-toast';
 import { useAuth } from '@lib/context/auth-context';
 import { useModal } from '@lib/hooks/useModal';
-import { tweetsCollection } from '@lib/firebase/collections';
+import { wavesCollection } from '@lib/firebase/collections';
 import {
-  removeTweet,
+  removeWave,
   manageReply,
   manageFollow,
-  managePinnedTweet,
-  manageTotalTweets,
+  managePinnedWave,
+  manageTotalWaves,
   manageTotalPhotos
 } from '@lib/firebase/utils';
 import { delayScroll, preventBubbling, sleep } from '@lib/utils';
@@ -24,7 +24,7 @@ import { ToolTip } from '@components/ui/tooltip';
 import { HeroIcon } from '@components/ui/hero-icon';
 import { CustomIcon } from '@components/ui/custom-icon';
 import type { Variants } from 'framer-motion';
-import type { Tweet } from '@lib/types/tweet';
+import type { Wave } from '@lib/types/wave';
 import type { User } from '@lib/types/user';
 
 export const variants: Variants = {
@@ -37,43 +37,43 @@ export const variants: Variants = {
   exit: { opacity: 0, y: -25, transition: { duration: 0.2 } }
 };
 
-type TweetActionsProps = Pick<Tweet, 'createdBy'> & {
+type WaveActionsProps = Pick<Wave, 'createdBy'> & {
   isOwner: boolean;
   ownerId: string;
-  tweetId: string;
+  waveId: string;
   username: string;
   parentId?: string;
   hasImages: boolean;
-  viewTweet?: boolean;
+  viewWave?: boolean;
 };
 
 type PinModalData = Record<'title' | 'description' | 'mainBtnLabel', string>;
 
 const pinModalData: Readonly<PinModalData[]> = [
   {
-    title: 'Pin Tweet to from profile?',
+    title: 'Pin Wave to from profile?',
     description:
-      'This will appear at the top of your profile and replace any previously pinned Tweet.',
+      'This will appear at the top of your profile and replace any previously pinned Wave.',
     mainBtnLabel: 'Pin'
   },
   {
-    title: 'Unpin Tweet from profile?',
+    title: 'Unpin Wave from profile?',
     description:
       'This will no longer appear automatically at the top of your profile.',
     mainBtnLabel: 'Unpin'
   }
 ];
 
-export function TweetActions({
+export function WaveActions({
   isOwner,
   ownerId,
-  tweetId,
+  waveId,
   parentId,
   username,
   hasImages,
-  viewTweet,
+  viewWave,
   createdBy
-}: TweetActionsProps): JSX.Element {
+}: WaveActionsProps): JSX.Element {
   const { user, isAdmin } = useAuth();
   const { push } = useRouter();
 
@@ -89,40 +89,40 @@ export function TweetActions({
     closeModal: pinCloseModal
   } = useModal();
 
-  const { id: userId, following, pinnedTweet } = user as User;
+  const { id: userId, following, pinnedWave } = user as User;
 
   const isInAdminControl = isAdmin && !isOwner;
-  const tweetIsPinned = pinnedTweet === tweetId;
+  const waveIsPinned = pinnedWave === waveId;
 
   const handleRemove = async (): Promise<void> => {
-    if (viewTweet)
+    if (viewWave)
       if (parentId) {
-        const parentSnapshot = await getDoc(doc(tweetsCollection, parentId));
+        const parentSnapshot = await getDoc(doc(wavesCollection, parentId));
         if (parentSnapshot.exists()) {
-          await push(`/tweet/${parentId}`, undefined, { scroll: false });
+          await push(`/wave/${parentId}`, undefined, { scroll: false });
           delayScroll(200)();
           await sleep(50);
         } else await push('/home');
       } else await push('/home');
 
     await Promise.all([
-      removeTweet(tweetId),
-      manageTotalTweets('decrement', ownerId),
+      removeWave(waveId),
+      manageTotalWaves('decrement', ownerId),
       hasImages && manageTotalPhotos('decrement', createdBy),
       parentId && manageReply('decrement', parentId)
     ]);
 
     toast.success(
-      `${isInAdminControl ? `@${username}'s` : 'Your'} Tweet was deleted`
+      `${isInAdminControl ? `@${username}'s` : 'Your'} Wave was deleted`
     );
 
     removeCloseModal();
   };
 
   const handlePin = async (): Promise<void> => {
-    await managePinnedTweet(tweetIsPinned ? 'unpin' : 'pin', userId, tweetId);
+    await managePinnedWave(waveIsPinned ? 'unpin' : 'pin', userId, waveId);
     toast.success(
-      `Your tweet was ${tweetIsPinned ? 'unpinned' : 'pinned'} to your profile`
+      `Your wave was ${waveIsPinned ? 'unpinned' : 'pinned'} to your profile`
     );
     pinCloseModal();
   };
@@ -143,7 +143,7 @@ export function TweetActions({
   const userIsFollowed = following.includes(createdBy);
 
   const currentPinModalData = useMemo(
-    () => pinModalData[+tweetIsPinned],
+    () => pinModalData[+waveIsPinned],
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [pinOpen]
   );
@@ -156,7 +156,7 @@ export function TweetActions({
         closeModal={removeCloseModal}
       >
         <ActionModal
-          title='Delete Tweet?'
+          title='Delete Wave?'
           description={`This can’t be undone and it will be removed from ${
             isInAdminControl ? `@${username}'s` : 'your'
           } profile, the timeline of any accounts that follow ${
@@ -231,7 +231,7 @@ export function TweetActions({
                       as={Button}
                       onClick={preventBubbling(pinOpenModal)}
                     >
-                      {tweetIsPinned ? (
+                      {waveIsPinned ? (
                         <>
                           <CustomIcon iconName='PinOffIcon' />
                           Unpin from profile

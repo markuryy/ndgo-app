@@ -1,26 +1,26 @@
 import { useEffect } from 'react';
 import { doc } from 'firebase/firestore';
 import { useDocument } from '@lib/hooks/useDocument';
-import { tweetsCollection } from '@lib/firebase/collections';
-import { Tweet } from '@components/tweet/tweet';
+import { wavesCollection } from '@lib/firebase/collections';
+import { Wave } from '@components/wave/wave';
 import type { RefObject } from 'react';
 
-type ViewParentTweetProps = {
+type ViewParentWaveProps = {
   parentId: string;
-  viewTweetRef: RefObject<HTMLElement>;
+  viewWaveRef: RefObject<HTMLElement>;
 };
 
-export function ViewParentTweet({
+export function ViewParentWave({
   parentId,
-  viewTweetRef
-}: ViewParentTweetProps): JSX.Element | null {
-  const { data, loading } = useDocument(doc(tweetsCollection, parentId), {
+  viewWaveRef
+}: ViewParentWaveProps): JSX.Element | null {
+  const { data, loading } = useDocument(doc(wavesCollection, parentId), {
     includeUser: true,
     allowNull: true
   });
 
   useEffect(() => {
-    if (!loading) viewTweetRef.current?.scrollIntoView();
+    if (!loading) viewWaveRef.current?.scrollIntoView();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?.id, loading]);
 
@@ -32,7 +32,7 @@ export function ViewParentTweet({
           className='rounded-2xl bg-main-sidebar-background py-3 px-1 pl-4 
                      text-light-secondary dark:text-dark-secondary'
         >
-          This Tweet was deleted by the Tweet author.{' '}
+          This Wave was deleted by the Wave author.{' '}
           <a
             className='custom-underline text-main-accent'
             href='https://help.twitter.com/rules-and-policies/notices-on-twitter'
@@ -45,5 +45,5 @@ export function ViewParentTweet({
       </div>
     );
 
-  return <Tweet parentTweet {...data} />;
+  return <Wave parentWave {...data} />;
 }

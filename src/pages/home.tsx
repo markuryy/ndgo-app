@@ -2,7 +2,7 @@ import { AnimatePresence } from 'framer-motion';
 import { where, orderBy } from 'firebase/firestore';
 import { useWindow } from '@lib/context/window-context';
 import { useInfiniteScroll } from '@lib/hooks/useInfiniteScroll';
-import { tweetsCollection } from '@lib/firebase/collections';
+import { wavesCollection } from '@lib/firebase/collections';
 import { HomeLayout, ProtectedLayout } from '@components/layout/common-layout';
 import { MainLayout } from '@components/layout/main-layout';
 import { SEO } from '@components/common/seo';
@@ -10,7 +10,7 @@ import { MainContainer } from '@components/home/main-container';
 import { Input } from '@components/input/input';
 import { UpdateUsername } from '@components/home/update-username';
 import { MainHeader } from '@components/home/main-header';
-import { Tweet } from '@components/tweet/tweet';
+import { Wave } from '@components/wave/wave';
 import { Loading } from '@components/ui/loading';
 import { Error } from '@components/ui/error';
 import type { ReactElement, ReactNode } from 'react';
@@ -19,7 +19,7 @@ export default function Home(): JSX.Element {
   const { isMobile } = useWindow();
 
   const { data, loading, LoadMore } = useInfiniteScroll(
-    tweetsCollection,
+    wavesCollection,
     [where('parent', '==', null), orderBy('createdAt', 'desc')],
     { includeUser: true, allowNull: true, preserve: true }
   );
@@ -43,8 +43,8 @@ export default function Home(): JSX.Element {
         ) : (
           <>
             <AnimatePresence mode='popLayout'>
-              {data.map((tweet) => (
-                <Tweet {...tweet} key={tweet.id} />
+              {data.map((wave) => (
+                <Wave {...wave} key={wave.id} />
               ))}
             </AnimatePresence>
             <LoadMore />

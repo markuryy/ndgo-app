@@ -10,19 +10,19 @@ import { siteURL } from '@lib/env';
 import { Button } from '@components/ui/button';
 import { HeroIcon } from '@components/ui/hero-icon';
 import { ToolTip } from '@components/ui/tooltip';
-import { variants } from './tweet-actions';
+import { variants } from './wave-actions';
 
-type TweetShareProps = {
+type WaveShareProps = {
   userId: string;
-  tweetId: string;
-  viewTweet?: boolean;
+  waveId: string;
+  viewWave?: boolean;
 };
 
-export function TweetShare({
+export function WaveShare({
   userId,
-  tweetId,
-  viewTweet
-}: TweetShareProps): JSX.Element {
+  waveId,
+  viewWave
+}: WaveShareProps): JSX.Element {
   const { userBookmarks } = useAuth();
 
   const handleBookmark =
@@ -37,23 +37,23 @@ export function TweetShare({
         type === 'bookmark'
           ? (): JSX.Element => (
               <span className='flex gap-2'>
-                Tweet added to your Bookmarks
+                Wave added to your Bookmarks
                 <Link href='/bookmarks'>
                   <a className='custom-underline font-bold'>View</a>
                 </Link>
               </span>
             )
-          : 'Tweet removed from your bookmarks'
+          : 'Wave removed from your bookmarks'
       );
     };
 
   const handleCopy = (closeMenu: () => void) => async (): Promise<void> => {
     closeMenu();
-    await navigator.clipboard.writeText(`${siteURL}/tweet/${tweetId}`);
+    await navigator.clipboard.writeText(`${siteURL}/wave/${waveId}`);
     toast.success('Copied to clipboard');
   };
 
-  const tweetIsBookmarked = !!userBookmarks?.some(({ id }) => id === tweetId);
+  const waveIsBookmarked = !!userBookmarks?.some(({ id }) => id === waveId);
 
   return (
     <Popover className='relative'>
@@ -72,7 +72,7 @@ export function TweetShare({
                          group-focus-visible:ring-accent-blue/80 group-active:bg-accent-blue/20'
             >
               <HeroIcon
-                className={viewTweet ? 'h-6 w-6' : 'h-5 w-5'}
+                className={viewWave ? 'h-6 w-6' : 'h-5 w-5'}
                 iconName='ArrowUpTrayIcon'
               />
               {!open && <ToolTip tip='Share' />}
@@ -92,14 +92,14 @@ export function TweetShare({
                   onClick={preventBubbling(handleCopy(close))}
                 >
                   <HeroIcon iconName='LinkIcon' />
-                  Copy link to Tweet
+                  Copy link to Wave
                 </Popover.Button>
-                {!tweetIsBookmarked ? (
+                {!waveIsBookmarked ? (
                   <Popover.Button
                     className='accent-tab flex w-full gap-3 rounded-md rounded-t-none p-4 hover:bg-main-sidebar-background'
                     as={Button}
                     onClick={preventBubbling(
-                      handleBookmark(close, 'bookmark', userId, tweetId)
+                      handleBookmark(close, 'bookmark', userId, waveId)
                     )}
                   >
                     <HeroIcon iconName='BookmarkIcon' />
@@ -110,11 +110,11 @@ export function TweetShare({
                     className='accent-tab flex w-full gap-3 rounded-md rounded-t-none p-4 hover:bg-main-sidebar-background'
                     as={Button}
                     onClick={preventBubbling(
-                      handleBookmark(close, 'unbookmark', userId, tweetId)
+                      handleBookmark(close, 'unbookmark', userId, waveId)
                     )}
                   >
                     <HeroIcon iconName='BookmarkSlashIcon' />
-                    Remove Tweet from Bookmarks
+                    Remove Wave from Bookmarks
                   </Popover.Button>
                 )}
               </Popover.Panel>

@@ -13,8 +13,8 @@ import type { MotionProps } from 'framer-motion';
 import type { ImagesPreview, ImageData } from '@lib/types/file';
 
 type ImagePreviewProps = {
-  tweet?: boolean;
-  viewTweet?: boolean;
+  wave?: boolean;
+  viewWave?: boolean;
   previewCount: number;
   imagesPreview: ImagesPreview;
   removeImage?: (targetId: string) => () => void;
@@ -41,8 +41,8 @@ const postImageBorderRadius: Readonly<PostImageBorderRadius> = {
 };
 
 export function ImagePreview({
-  tweet,
-  viewTweet,
+  wave,
+  viewWave,
   previewCount,
   imagesPreview,
   removeImage
@@ -84,29 +84,29 @@ export function ImagePreview({
     setSelectedIndex(nextIndex);
   };
 
-  const isTweet = tweet ?? viewTweet;
+  const isWave = wave ?? viewWave;
 
   return (
     <div
       className={cn(
         'grid grid-cols-2 grid-rows-2 rounded-2xl',
-        viewTweet
+        viewWave
           ? 'h-[51vw] xs:h-[42vw] md:h-[305px]'
           : 'h-[42vw] xs:h-[37vw] md:h-[271px]',
-        isTweet ? 'mt-2 gap-0.5' : 'gap-3'
+        isWave ? 'mt-2 gap-0.5' : 'gap-3'
       )}
     >
       <Modal
         modalClassName={cn(
           'flex justify-center w-full items-center relative',
-          isTweet && 'h-full'
+          isWave && 'h-full'
         )}
         open={open}
         closeModal={closeModal}
         closePanelOnClick
       >
         <ImageModal
-          tweet={isTweet}
+          wave={isWave}
           imageData={selectedImage as ImageData}
           previewCount={previewCount}
           selectedIndex={selectedIndex}
@@ -122,7 +122,7 @@ export function ImagePreview({
               type='button'
               className={cn(
                 'accent-tab group relative transition-shadow',
-                isTweet
+                isWave
                   ? postImageBorderRadius[previewCount][index]
                   : 'rounded-2xl',
                 {
@@ -133,7 +133,7 @@ export function ImagePreview({
               )}
               {...variants}
               onClick={preventBubbling(handleSelectedImage(index, isVideo))}
-              layout={!isTweet ? true : false}
+              layout={!isWave ? true : false}
               key={id}
             >
               {isVideo ? (
@@ -150,7 +150,7 @@ export function ImagePreview({
                     className={cn(
                       `relative h-full w-full cursor-pointer transition 
                        hover:brightness-75 hover:duration-200`,
-                      isTweet
+                      isWave
                         ? postImageBorderRadius[previewCount][index]
                         : 'rounded-2xl'
                     )}
@@ -164,7 +164,7 @@ export function ImagePreview({
                   className='relative h-full w-full cursor-pointer transition 
                              hover:brightness-75 hover:duration-200'
                   imgClassName={cn(
-                    isTweet
+                    isWave
                       ? postImageBorderRadius[previewCount][index]
                       : 'rounded-2xl'
                   )}
@@ -172,7 +172,7 @@ export function ImagePreview({
                   layout='fill'
                   src={src}
                   alt={alt}
-                  useSkeleton={isTweet}
+                  useSkeleton={isWave}
                 />
               )}
               {removeImage && (

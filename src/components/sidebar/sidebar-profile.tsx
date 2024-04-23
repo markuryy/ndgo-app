@@ -30,8 +30,8 @@ export function SidebarProfile(): JSX.Element {
         <ActionModal
           useIcon
           focusOnMainBtn
-          title='Log out of Twitter?'
-          description='You can always log back in at any time. If you just want to switch accounts, you can do that by adding an existing account.'
+          title='Log out of ndgo?'
+          description='You can always log back in at any time.'
           mainBtnLabel='Log out'
           action={signOut}
           closeModal={closeModal}

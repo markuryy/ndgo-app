@@ -45,7 +45,7 @@ export function AsideTrends({ inTrendsPage }: AsideTrendsProps): JSX.Element {
           {!inTrendsPage && (
             <h2 className='text-xl font-extrabold'>Trends for you</h2>
           )}
-          {trends.map(({ name, query, tweet_volume, url }) => (
+          {trends.map(({ name, query, wave_volume, url }) => (
             <Link href={url} key={query}>
               <a
                 className='hover-animation accent-tab hover-card relative 
@@ -75,7 +75,7 @@ export function AsideTrends({ inTrendsPage }: AsideTrendsProps): JSX.Element {
                 </p>
                 <p className='font-bold'>{name}</p>
                 <p className='text-sm text-light-secondary dark:text-dark-secondary'>
-                  {formatNumber(tweet_volume)} tweets
+                  {formatNumber(wave_volume)} waves
                 </p>
               </a>
             </Link>

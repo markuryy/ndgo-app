@@ -25,11 +25,11 @@ type InputFormProps = {
   inputRef: RefObject<HTMLTextAreaElement>;
   inputValue: string;
   replyModal?: boolean;
-  isValidTweet: boolean;
+  isValidWave: boolean;
   isUploadingImages: boolean;
-  sendTweet: () => Promise<void>;
+  sendWave: () => Promise<void>;
   handleFocus: () => void;
-  discardTweet: () => void;
+  discardWave: () => void;
   handleChange: ({
     target: { value }
   }: ChangeEvent<HTMLTextAreaElement>) => void;
@@ -61,11 +61,11 @@ export function InputForm({
   inputRef,
   replyModal,
   inputValue,
-  isValidTweet,
+  isValidWave,
   isUploadingImages,
-  sendTweet,
+  sendWave,
   handleFocus,
-  discardTweet,
+  discardWave,
   handleChange,
   handleImageUpload
 }: InputFormProps): JSX.Element {
@@ -78,11 +78,11 @@ export function InputForm({
     ctrlKey
   }: KeyboardEvent<HTMLTextAreaElement>): void => {
     if (!modal && key === 'Escape')
-      if (isValidTweet) {
+      if (isValidWave) {
         inputRef.current?.blur();
         openModal();
-      } else discardTweet();
-    else if (ctrlKey && key === 'Enter' && isValidTweet) void sendTweet();
+      } else discardWave();
+    else if (ctrlKey && key === 'Enter' && isValidWave) void sendWave();
   };
 
   const handleShowHideNav = (blur?: boolean) => (): void => {
@@ -104,7 +104,7 @@ export function InputForm({
   };
 
   const handleClose = (): void => {
-    discardTweet();
+    discardWave();
     closeModal();
   };
 
@@ -118,7 +118,7 @@ export function InputForm({
         closeModal={closeModal}
       >
         <ActionModal
-          title='Discard Tweet?'
+          title='Discard Wave?'
           description='This can’t be undone and you’ll lose your draft.'
           mainBtnClassName='bg-accent-red hover:bg-accent-red/90 active:bg-accent-red/75'
           mainBtnLabel='Discard'
@@ -146,7 +146,7 @@ export function InputForm({
                        placeholder:text-light-secondary dark:placeholder:text-dark-secondary'
             value={inputValue}
             placeholder={
-              reply || replyModal ? 'Tweet your reply' : "What's happening?"
+              reply || replyModal ? 'Wave your reply' : "What's happening?"
             }
             onBlur={handleShowHideNav(true)}
             minRows={loading ? 1 : modal && !isUploadingImages ? 3 : 1}

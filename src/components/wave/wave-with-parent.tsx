@@ -1,15 +1,15 @@
 import { useState } from 'react';
-import { Tweet } from './tweet';
-import { TweetParent } from './tweet-parent';
-import type { TweetWithUser } from '@lib/types/tweet';
+import { Wave } from './wave';
+import { WaveParent } from './wave-parent';
+import type { WaveWithUser } from '@lib/types/wave';
 
-type TweetWithParentProps = {
-  data: TweetWithUser[];
+type WaveWithParentProps = {
+  data: WaveWithUser[];
 };
 
 export type LoadedParents = Record<'parentId' | 'childId', string>[];
 
-export function TweetWithParent({ data }: TweetWithParentProps): JSX.Element {
+export function WaveWithParent({ data }: WaveWithParentProps): JSX.Element {
   const [loadedParents, setLoadedParents] = useState<LoadedParents>([]);
 
   const addParentId = (parentId: string, targetChildId: string): void =>
@@ -25,16 +25,16 @@ export function TweetWithParent({ data }: TweetWithParentProps): JSX.Element {
 
   return (
     <>
-      {filteredData.map((tweet) => (
-        <div className='[&>article:nth-child(2)]:-mt-1' key={tweet.id}>
-          {tweet.parent && (
-            <TweetParent
-              parentId={tweet.parent.id}
+      {filteredData.map((wave) => (
+        <div className='[&>article:nth-child(2)]:-mt-1' key={wave.id}>
+          {wave.parent && (
+            <WaveParent
+              parentId={wave.parent.id}
               loadedParents={loadedParents}
               addParentId={addParentId}
             />
           )}
-          <Tweet {...tweet} />
+          <Wave {...wave} />
         </div>
       ))}
     </>

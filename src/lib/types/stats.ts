@@ -2,7 +2,7 @@ import type { Timestamp, FirestoreDataConverter } from 'firebase/firestore';
 
 export type Stats = {
   likes: string[];
-  tweets: string[];
+  waves: string[];
   updatedAt: Timestamp | null;
 };
 

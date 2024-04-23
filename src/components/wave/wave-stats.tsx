@@ -2,52 +2,52 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import cn from 'clsx';
-import { manageRetweet, manageLike } from '@lib/firebase/utils';
-import { ViewTweetStats } from '@components/view/view-tweet-stats';
-import { TweetOption } from './tweet-option';
-import { TweetShare } from './tweet-share';
-import type { Tweet } from '@lib/types/tweet';
+import { manageRewave, manageLike } from '@lib/firebase/utils';
+import { ViewWaveStats } from '@components/view/view-wave-stats';
+import { WaveOption } from './wave-option';
+import { WaveShare } from './wave-share';
+import type { Wave } from '@lib/types/wave';
 
-type TweetStatsProps = Pick<
-  Tweet,
-  'userLikes' | 'userRetweets' | 'userReplies'
+type WaveStatsProps = Pick<
+  Wave,
+  'userLikes' | 'userRewaves' | 'userReplies'
 > & {
   reply?: boolean;
   userId: string;
   isOwner: boolean;
-  tweetId: string;
-  viewTweet?: boolean;
+  waveId: string;
+  viewWave?: boolean;
   openModal?: () => void;
 };
 
-export function TweetStats({
+export function WaveStats({
   reply,
   userId,
   isOwner,
-  tweetId,
+  waveId,
   userLikes,
-  viewTweet,
-  userRetweets,
+  viewWave,
+  userRewaves,
   userReplies: totalReplies,
   openModal
-}: TweetStatsProps): JSX.Element {
+}: WaveStatsProps): JSX.Element {
   const totalLikes = userLikes.length;
-  const totalTweets = userRetweets.length;
+  const totalWaves = userRewaves.length;
 
-  const [{ currentReplies, currentTweets, currentLikes }, setCurrentStats] =
+  const [{ currentReplies, currentWaves, currentLikes }, setCurrentStats] =
     useState({
       currentReplies: totalReplies,
       currentLikes: totalLikes,
-      currentTweets: totalTweets
+      currentWaves: totalWaves
     });
 
   useEffect(() => {
     setCurrentStats({
       currentReplies: totalReplies,
       currentLikes: totalLikes,
-      currentTweets: totalTweets
+      currentWaves: totalWaves
     });
-  }, [totalReplies, totalLikes, totalTweets]);
+  }, [totalReplies, totalLikes, totalWaves]);
 
   const replyMove = useMemo(
     () => (totalReplies > currentReplies ? -25 : 25),
@@ -59,27 +59,27 @@ export function TweetStats({
     [totalLikes]
   );
 
-  const tweetMove = useMemo(
-    () => (totalTweets > currentTweets ? -25 : 25),
-    [totalTweets]
+  const waveMove = useMemo(
+    () => (totalWaves > currentWaves ? -25 : 25),
+    [totalWaves]
   );
 
-  const tweetIsLiked = userLikes.includes(userId);
-  const tweetIsRetweeted = userRetweets.includes(userId);
+  const waveIsLiked = userLikes.includes(userId);
+  const waveIsRewaveed = userRewaves.includes(userId);
 
-  const isStatsVisible = !!(totalReplies || totalTweets || totalLikes);
+  const isStatsVisible = !!(totalReplies || totalWaves || totalLikes);
 
   return (
     <>
-      {viewTweet && (
-        <ViewTweetStats
+      {viewWave && (
+        <ViewWaveStats
           likeMove={likeMove}
           userLikes={userLikes}
-          tweetMove={tweetMove}
+          waveMove={waveMove}
           replyMove={replyMove}
-          userRetweets={userRetweets}
+          userRewaves={userRewaves}
           currentLikes={currentLikes}
-          currentTweets={currentTweets}
+          currentWaves={currentWaves}
           currentReplies={currentReplies}
           isStatsVisible={isStatsVisible}
         />
@@ -87,10 +87,10 @@ export function TweetStats({
       <div
         className={cn(
           'flex text-light-secondary inner:outline-none dark:text-dark-secondary',
-          viewTweet ? 'justify-around py-2' : 'max-w-md justify-between'
+          viewWave ? 'justify-around py-2' : 'max-w-md justify-between'
         )}
       >
-        <TweetOption
+        <WaveOption
           className='hover:text-accent-blue focus-visible:text-accent-blue'
           iconClassName='group-hover:bg-accent-blue/10 group-active:bg-accent-blue/20 
                          group-focus-visible:bg-accent-blue/10 group-focus-visible:ring-accent-blue/80'
@@ -98,49 +98,49 @@ export function TweetStats({
           move={replyMove}
           stats={currentReplies}
           iconName='ChatBubbleOvalLeftIcon'
-          viewTweet={viewTweet}
+          viewWave={viewWave}
           onClick={openModal}
           disabled={reply}
         />
-        <TweetOption
+        <WaveOption
           className={cn(
             'hover:text-accent-green focus-visible:text-accent-green',
-            tweetIsRetweeted && 'text-accent-green [&>i>svg]:[stroke-width:2px]'
+            waveIsRewaveed && 'text-accent-green [&>i>svg]:[stroke-width:2px]'
           )}
           iconClassName='group-hover:bg-accent-green/10 group-active:bg-accent-green/20
                          group-focus-visible:bg-accent-green/10 group-focus-visible:ring-accent-green/80'
-          tip={tweetIsRetweeted ? 'Undo Retweet' : 'Retweet'}
-          move={tweetMove}
-          stats={currentTweets}
+          tip={waveIsRewaveed ? 'Undo Rewave' : 'Rewave'}
+          move={waveMove}
+          stats={currentWaves}
           iconName='ArrowPathRoundedSquareIcon'
-          viewTweet={viewTweet}
-          onClick={manageRetweet(
-            tweetIsRetweeted ? 'unretweet' : 'retweet',
+          viewWave={viewWave}
+          onClick={manageRewave(
+            waveIsRewaveed ? 'unrewave' : 'rewave',
             userId,
-            tweetId
+            waveId
           )}
         />
-        <TweetOption
+        <WaveOption
           className={cn(
             'hover:text-accent-pink focus-visible:text-accent-pink',
-            tweetIsLiked && 'text-accent-pink [&>i>svg]:fill-accent-pink'
+            waveIsLiked && 'text-accent-pink [&>i>svg]:fill-accent-pink'
           )}
           iconClassName='group-hover:bg-accent-pink/10 group-active:bg-accent-pink/20
                          group-focus-visible:bg-accent-pink/10 group-focus-visible:ring-accent-pink/80'
-          tip={tweetIsLiked ? 'Unlike' : 'Like'}
+          tip={waveIsLiked ? 'Unlike' : 'Like'}
           move={likeMove}
           stats={currentLikes}
           iconName='HeartIcon'
-          viewTweet={viewTweet}
+          viewWave={viewWave}
           onClick={manageLike(
-            tweetIsLiked ? 'unlike' : 'like',
+            waveIsLiked ? 'unlike' : 'like',
             userId,
-            tweetId
+            waveId
           )}
         />
-        <TweetShare userId={userId} tweetId={tweetId} viewTweet={viewTweet} />
+        <WaveShare userId={userId} waveId={waveId} viewWave={viewWave} />
         {isOwner && (
-          <TweetOption
+          <WaveOption
             className='hover:text-accent-blue focus-visible:text-accent-blue'
             iconClassName='group-hover:bg-accent-blue/10 group-active:bg-accent-blue/20 
                            group-focus-visible:bg-accent-blue/10 group-focus-visible:ring-accent-blue/80'

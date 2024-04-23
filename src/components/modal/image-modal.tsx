@@ -13,7 +13,7 @@ import type { ImageData } from '@lib/types/file';
 import type { IconName } from '@components/ui/hero-icon';
 
 type ImageModalProps = {
-  tweet?: boolean;
+  wave?: boolean;
   imageData: ImageData;
   previewCount: number;
   selectedIndex?: number;
@@ -28,7 +28,7 @@ const arrowButtons: Readonly<ArrowButton[]> = [
 ];
 
 export function ImageModal({
-  tweet,
+  wave,
   imageData,
   previewCount,
   selectedIndex,
@@ -45,7 +45,7 @@ export function ImageModal({
 
   useEffect(() => {
     if (
-      tweet &&
+      wave &&
       selectedIndex !== undefined &&
       !indexes.includes(selectedIndex)
     ) {
@@ -61,7 +61,7 @@ export function ImageModal({
 
     if (isVideo) media.onloadeddata = handleLoadingCompleted;
     else media.onload = handleLoadingCompleted;
-  }, [...(tweet && previewCount > 1 ? [src] : [])]);
+  }, [...(wave && previewCount > 1 ? [src] : [])]);
 
   useEffect(() => {
     if (!requireArrows) return;
@@ -103,7 +103,7 @@ export function ImageModal({
           <motion.div
             className='mx-auto'
             {...backdrop}
-            exit={tweet ? (backdrop.exit as VariantLabels) : undefined}
+            exit={wave ? (backdrop.exit as VariantLabels) : undefined}
             transition={{ duration: 0.15 }}
           >
             <Loading iconClassName='w-20 h-20' />

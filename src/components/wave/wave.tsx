@@ -5,26 +5,26 @@ import { useAuth } from '@lib/context/auth-context';
 import { useModal } from '@lib/hooks/useModal';
 import { delayScroll } from '@lib/utils';
 import { Modal } from '@components/modal/modal';
-import { TweetReplyModal } from '@components/modal/tweet-reply-modal';
+import { WaveReplyModal } from '@components/modal/wave-reply-modal';
 import { ImagePreview } from '@components/input/image-preview';
 import { UserAvatar } from '@components/user/user-avatar';
 import { UserTooltip } from '@components/user/user-tooltip';
 import { UserName } from '@components/user/user-name';
 import { UserUsername } from '@components/user/user-username';
-import { TweetActions } from './tweet-actions';
-import { TweetStatus } from './tweet-status';
-import { TweetStats } from './tweet-stats';
-import { TweetDate } from './tweet-date';
+import { WaveActions } from './wave-actions';
+import { WaveStatus } from './wave-status';
+import { WaveStats } from './wave-stats';
+import { WaveDate } from './wave-date';
 import type { Variants } from 'framer-motion';
-import type { Tweet } from '@lib/types/tweet';
+import type { Wave } from '@lib/types/wave';
 import type { User } from '@lib/types/user';
 
-export type TweetProps = Tweet & {
+export type WaveProps = Wave & {
   user: User;
   modal?: boolean;
   pinned?: boolean;
   profile?: User | null;
-  parentTweet?: boolean;
+  parentWave?: boolean;
 };
 
 export const variants: Variants = {
@@ -33,9 +33,9 @@ export const variants: Variants = {
   exit: { opacity: 0, transition: { duration: 0.2 } }
 };
 
-export function Tweet(tweet: TweetProps): JSX.Element {
+export function Wave(wave: WaveProps): JSX.Element {
   const {
-    id: tweetId,
+    id: waveId,
     text,
     modal,
     images,
@@ -45,19 +45,19 @@ export function Tweet(tweet: TweetProps): JSX.Element {
     userLikes,
     createdBy,
     createdAt,
-    parentTweet,
+    parentWave,
     userReplies,
-    userRetweets,
-    user: tweetUserData
-  } = tweet;
+    userRewaves,
+    user: waveUserData
+  } = wave;
 
-  const { id: ownerId, name, username, verified, photoURL } = tweetUserData;
+  const { id: ownerId, name, username, verified, photoURL } = waveUserData;
 
   const { user } = useAuth();
 
   const { open, openModal, closeModal } = useModal();
 
-  const tweetLink = `/tweet/${tweetId}`;
+  const waveLink = `/wave/${waveId}`;
 
   const userId = user?.id as string;
 
@@ -72,14 +72,14 @@ export function Tweet(tweet: TweetProps): JSX.Element {
   } = profile ?? {};
 
   const reply = !!parent;
-  const tweetIsRetweeted = userRetweets.includes(profileId ?? '');
+  const waveIsRewaveed = userRewaves.includes(profileId ?? '');
 
   return (
     <motion.article
       {...(!modal ? { ...variants, layout: 'position' } : {})}
       animate={{
         ...variants.animate,
-        ...(parentTweet && { transition: { duration: 0.2 } })
+        ...(parentWave && { transition: { duration: 0.2 } })
       }}
     >
       <Modal
@@ -88,14 +88,14 @@ export function Tweet(tweet: TweetProps): JSX.Element {
         open={open}
         closeModal={closeModal}
       >
-        <TweetReplyModal tweet={tweet} closeModal={closeModal} />
+        <WaveReplyModal wave={wave} closeModal={closeModal} />
       </Modal>
-      <Link href={tweetLink} scroll={!reply}>
+      <Link href={waveLink} scroll={!reply}>
         <a
           className={cn(
             `accent-tab hover-card relative flex flex-col 
              gap-y-4 px-4 py-3 outline-none duration-200`,
-            parentTweet
+            parentWave
               ? 'mt-0.5 pt-2.5 pb-0'
               : 'border-b border-light-border dark:border-dark-border'
           )}
@@ -105,33 +105,33 @@ export function Tweet(tweet: TweetProps): JSX.Element {
           <div className='grid grid-cols-[auto,1fr] gap-x-3 gap-y-1'>
             <AnimatePresence initial={false}>
               {modal ? null : pinned ? (
-                <TweetStatus type='pin'>
-                  <p className='text-sm font-bold'>Pinned Tweet</p>
-                </TweetStatus>
+                <WaveStatus type='pin'>
+                  <p className='text-sm font-bold'>Pinned Wave</p>
+                </WaveStatus>
               ) : (
-                tweetIsRetweeted && (
-                  <TweetStatus type='tweet'>
+                waveIsRewaveed && (
+                  <WaveStatus type='wave'>
                     <Link href={profileUsername as string}>
                       <a className='custom-underline truncate text-sm font-bold'>
-                        {userId === profileId ? 'You' : profileName} Retweeted
+                        {userId === profileId ? 'You' : profileName} Rewaveed
                       </a>
                     </Link>
-                  </TweetStatus>
+                  </WaveStatus>
                 )
               )}
             </AnimatePresence>
             <div className='flex flex-col items-center gap-2'>
-              <UserTooltip avatar modal={modal} {...tweetUserData}>
+              <UserTooltip avatar modal={modal} {...waveUserData}>
                 <UserAvatar src={photoURL} alt={name} username={username} />
               </UserTooltip>
-              {parentTweet && (
+              {parentWave && (
                 <i className='hover-animation h-full w-0.5 bg-light-line-reply dark:bg-dark-line-reply' />
               )}
             </div>
             <div className='flex min-w-0 flex-col'>
               <div className='flex justify-between gap-2 text-light-secondary dark:text-dark-secondary'>
                 <div className='flex gap-1 truncate xs:overflow-visible xs:whitespace-normal'>
-                  <UserTooltip modal={modal} {...tweetUserData}>
+                  <UserTooltip modal={modal} {...waveUserData}>
                     <UserName
                       name={name}
                       username={username}
@@ -139,17 +139,17 @@ export function Tweet(tweet: TweetProps): JSX.Element {
                       className='text-light-primary dark:text-dark-primary'
                     />
                   </UserTooltip>
-                  <UserTooltip modal={modal} {...tweetUserData}>
+                  <UserTooltip modal={modal} {...waveUserData}>
                     <UserUsername username={username} />
                   </UserTooltip>
-                  <TweetDate tweetLink={tweetLink} createdAt={createdAt} />
+                  <WaveDate waveLink={waveLink} createdAt={createdAt} />
                 </div>
                 <div className='px-4'>
                   {!modal && (
-                    <TweetActions
+                    <WaveActions
                       isOwner={isOwner}
                       ownerId={ownerId}
-                      tweetId={tweetId}
+                      waveId={waveId}
                       parentId={parentId}
                       username={username}
                       hasImages={!!images}
@@ -179,20 +179,20 @@ export function Tweet(tweet: TweetProps): JSX.Element {
               <div className='mt-1 flex flex-col gap-2'>
                 {images && (
                   <ImagePreview
-                    tweet
+                    wave
                     imagesPreview={images}
                     previewCount={images.length}
                   />
                 )}
                 {!modal && (
-                  <TweetStats
+                  <WaveStats
                     reply={reply}
                     userId={userId}
                     isOwner={isOwner}
-                    tweetId={tweetId}
+                    waveId={waveId}
                     userLikes={userLikes}
                     userReplies={userReplies}
-                    userRetweets={userRetweets}
+                    userRewaves={userRewaves}
                     openModal={!parent ? openModal : undefined}
                   />
                 )}

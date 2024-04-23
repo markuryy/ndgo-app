@@ -4,42 +4,42 @@ import { useArrayDocument } from '@lib/hooks/useArrayDocument';
 import { useModal } from '@lib/hooks/useModal';
 import { usersCollection } from '@lib/firebase/collections';
 import { Modal } from '@components/modal/modal';
-import { TweetStatsModal } from '@components/modal/tweet-stats-modal';
-import { NumberStats } from '@components/tweet/number-stats';
+import { WaveStatsModal } from '@components/modal/wave-stats-modal';
+import { NumberStats } from '@components/wave/number-stats';
 import { UserCards } from '@components/user/user-cards';
-import type { Tweet } from '@lib/types/tweet';
+import type { Wave } from '@lib/types/wave';
 
-type viewTweetStats = Pick<Tweet, 'userRetweets' | 'userLikes'> & {
+type viewWaveStats = Pick<Wave, 'userRewaves' | 'userLikes'> & {
   likeMove: number;
-  tweetMove: number;
+  waveMove: number;
   replyMove: number;
   currentLikes: number;
-  currentTweets: number;
+  currentWaves: number;
   currentReplies: number;
   isStatsVisible: boolean;
 };
 
-export type StatsType = 'retweets' | 'likes';
+export type StatsType = 'rewaves' | 'likes';
 
 type Stats = [string, StatsType | null, number, number];
 
-export function ViewTweetStats({
+export function ViewWaveStats({
   likeMove,
   userLikes,
-  tweetMove,
+  waveMove,
   replyMove,
-  userRetweets,
+  userRewaves,
   currentLikes,
-  currentTweets,
+  currentWaves,
   currentReplies,
   isStatsVisible
-}: viewTweetStats): JSX.Element {
+}: viewWaveStats): JSX.Element {
   const [statsType, setStatsType] = useState<StatsType | null>(null);
 
   const { open, openModal, closeModal } = useModal();
 
   const { data, loading } = useArrayDocument(
-    statsType ? (statsType === 'likes' ? userLikes : userRetweets) : [],
+    statsType ? (statsType === 'likes' ? userLikes : userRewaves) : [],
     usersCollection,
     { disabled: !statsType }
   );
@@ -56,7 +56,7 @@ export function ViewTweetStats({
 
   const allStats: Readonly<Stats[]> = [
     ['Reply', null, replyMove, currentReplies],
-    ['Retweet', 'retweets', tweetMove, currentTweets],
+    ['Rewave', 'rewaves', waveMove, currentWaves],
     ['Like', 'likes', likeMove, currentLikes]
   ];
 
@@ -68,14 +68,14 @@ export function ViewTweetStats({
         open={open}
         closeModal={handleClose}
       >
-        <TweetStatsModal statsType={statsType} handleClose={handleClose}>
+        <WaveStatsModal statsType={statsType} handleClose={handleClose}>
           <UserCards
             follow
             type={statsType as StatsType}
             data={data}
             loading={loading}
           />
-        </TweetStatsModal>
+        </WaveStatsModal>
       </Modal>
       {isStatsVisible && (
         <div

@@ -4,11 +4,11 @@ import { AnimatePresence, motion } from 'framer-motion';
 import cn from 'clsx';
 import { toast } from 'react-hot-toast';
 import { addDoc, getDoc, serverTimestamp } from 'firebase/firestore';
-import { tweetsCollection } from '@lib/firebase/collections';
+import { wavesCollection } from '@lib/firebase/collections';
 import {
   manageReply,
   uploadImages,
-  manageTotalTweets,
+  manageTotalWaves,
   manageTotalPhotos
 } from '@lib/firebase/utils';
 import { useAuth } from '@lib/context/auth-context';
@@ -22,7 +22,7 @@ import type { ReactNode, FormEvent, ChangeEvent, ClipboardEvent } from 'react';
 import type { WithFieldValue } from 'firebase/firestore';
 import type { Variants } from 'framer-motion';
 import type { User } from '@lib/types/user';
-import type { Tweet } from '@lib/types/tweet';
+import type { Wave } from '@lib/types/wave';
 import type { FilesWithId, ImagesPreview, ImageData } from '@lib/types/file';
 
 type InputProps = {
@@ -72,7 +72,7 @@ export function Input({
     []
   );
 
-  const sendTweet = async (): Promise<void> => {
+  const sendWave = async (): Promise<void> => {
     inputRef.current?.blur();
 
     setLoading(true);
@@ -81,7 +81,7 @@ export function Input({
 
     const userId = user?.id as string;
 
-    const tweetData: WithFieldValue<Omit<Tweet, 'id'>> = {
+    const waveData: WithFieldValue<Omit<Wave, 'id'>> = {
       text: inputValue.trim() || null,
       parent: isReplying && parent ? parent : null,
       images: await uploadImages(userId, selectedImages),
@@ -90,22 +90,22 @@ export function Input({
       createdAt: serverTimestamp(),
       updatedAt: null,
       userReplies: 0,
-      userRetweets: []
+      userRewaves: []
     };
 
     await sleep(500);
 
-    const [tweetRef] = await Promise.all([
-      addDoc(tweetsCollection, tweetData),
-      manageTotalTweets('increment', userId),
-      tweetData.images && manageTotalPhotos('increment', userId),
+    const [waveRef] = await Promise.all([
+      addDoc(wavesCollection, waveData),
+      manageTotalWaves('increment', userId),
+      waveData.images && manageTotalPhotos('increment', userId),
       isReplying && manageReply('increment', parent?.id as string)
     ]);
 
-    const { id: tweetId } = await getDoc(tweetRef);
+    const { id: waveId } = await getDoc(waveRef);
 
     if (!modal && !replyModal) {
-      discardTweet();
+      discardWave();
       setLoading(false);
     }
 
@@ -114,8 +114,8 @@ export function Input({
     toast.success(
       () => (
         <span className='flex gap-2'>
-          Your Tweet was sent
-          <Link href={`/tweet/${tweetId}`}>
+          Your Wave was sent
+          <Link href={`/wave/${waveId}`}>
             <a className='custom-underline font-bold'>View</a>
           </Link>
         </span>
@@ -172,7 +172,7 @@ export function Input({
     setImagesPreview([]);
   };
 
-  const discardTweet = (): void => {
+  const discardWave = (): void => {
     setInputValue('');
     setVisited(false);
     cleanImage();
@@ -186,7 +186,7 @@ export function Input({
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    void sendTweet();
+    void sendWave();
   };
 
   const handleFocus = (): void => setVisited(!loading);
@@ -199,7 +199,7 @@ export function Input({
   const isValidInput = !!inputValue.trim().length;
   const isCharLimitExceeded = inputLength > inputLimit;
 
-  const isValidTweet =
+  const isValidWave =
     !isCharLimitExceeded && (isValidInput || isUploadingImages);
 
   return (
@@ -251,11 +251,11 @@ export function Input({
             inputRef={inputRef}
             replyModal={replyModal}
             inputValue={inputValue}
-            isValidTweet={isValidTweet}
+            isValidWave={isValidWave}
             isUploadingImages={isUploadingImages}
-            sendTweet={sendTweet}
+            sendWave={sendWave}
             handleFocus={handleFocus}
-            discardTweet={discardTweet}
+            discardWave={discardWave}
             handleChange={handleChange}
             handleImageUpload={handleImageUpload}
           >
@@ -274,7 +274,7 @@ export function Input({
                 modal={modal}
                 inputLimit={inputLimit}
                 inputLength={inputLength}
-                isValidTweet={isValidTweet}
+                isValidWave={isValidWave}
                 isCharLimitExceeded={isCharLimitExceeded}
                 handleImageUpload={handleImageUpload}
               />

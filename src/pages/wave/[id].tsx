@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import { useRouter } from 'next/router';
 import { AnimatePresence } from 'framer-motion';
 import { doc, query, where, orderBy } from 'firebase/firestore';
-import { tweetsCollection } from '@lib/firebase/collections';
+import { wavesCollection } from '@lib/firebase/collections';
 import { useCollection } from '@lib/hooks/useCollection';
 import { useDocument } from '@lib/hooks/useDocument';
 import { isPlural } from '@lib/utils';
@@ -10,79 +10,79 @@ import { HomeLayout, ProtectedLayout } from '@components/layout/common-layout';
 import { MainLayout } from '@components/layout/main-layout';
 import { MainContainer } from '@components/home/main-container';
 import { MainHeader } from '@components/home/main-header';
-import { Tweet } from '@components/tweet/tweet';
-import { ViewTweet } from '@components/view/view-tweet';
+import { Wave } from '@components/wave/wave';
+import { ViewWave } from '@components/view/view-wave';
 import { SEO } from '@components/common/seo';
 import { Loading } from '@components/ui/loading';
 import { Error } from '@components/ui/error';
-import { ViewParentTweet } from '@components/view/view-parent-tweet';
+import { ViewParentWave } from '@components/view/view-parent-wave';
 import type { ReactElement, ReactNode } from 'react';
 
-export default function TweetId(): JSX.Element {
+export default function WaveId(): JSX.Element {
   const {
     query: { id },
     back
   } = useRouter();
 
-  const { data: tweetData, loading: tweetLoading } = useDocument(
-    doc(tweetsCollection, id as string),
+  const { data: waveData, loading: waveLoading } = useDocument(
+    doc(wavesCollection, id as string),
     { includeUser: true, allowNull: true }
   );
 
-  const viewTweetRef = useRef<HTMLElement>(null);
+  const viewWaveRef = useRef<HTMLElement>(null);
 
   const { data: repliesData, loading: repliesLoading } = useCollection(
     query(
-      tweetsCollection,
+      wavesCollection,
       where('parent.id', '==', id),
       orderBy('createdAt', 'desc')
     ),
     { includeUser: true, allowNull: true }
   );
 
-  const { text, images } = tweetData ?? {};
+  const { text, images } = waveData ?? {};
 
   const imagesLength = images?.length ?? 0;
-  const parentId = tweetData?.parent?.id;
+  const parentId = waveData?.parent?.id;
 
-  const pageTitle = tweetData
-    ? `${tweetData.user.name} on Twitter: "${text ?? ''}${
+  const pageTitle = waveData
+    ? `${waveData.user.name} on ndgo: "${text ?? ''}${
         images ? ` (${imagesLength} image${isPlural(imagesLength)})` : ''
-      }" / Twitter`
+      }" / ndgo`
     : null;
 
   return (
     <MainContainer className='!pb-[1280px]'>
       <MainHeader
         useActionButton
-        title={parentId ? 'Thread' : 'Tweet'}
+        title={parentId ? 'Thread' : 'Wave'}
         action={back}
       />
       <section>
-        {tweetLoading ? (
+        {waveLoading ? (
           <Loading className='mt-5' />
-        ) : !tweetData ? (
+        ) : !waveData ? (
           <>
-            <SEO title='Tweet not found / Twitter' />
-            <Error message='Tweet not found' />
+            <SEO title='Wave not fount / ndgo' />
+            <Error message='Wave not found' />
           </>
         ) : (
           <>
             {pageTitle && <SEO title={pageTitle} />}
             {parentId && (
-              <ViewParentTweet
+              <ViewParentWave
                 parentId={parentId}
-                viewTweetRef={viewTweetRef}
+                viewWaveRef={viewWaveRef}
               />
             )}
-            <ViewTweet viewTweetRef={viewTweetRef} {...tweetData} />
-            {tweetData &&
+            <ViewWave viewWaveRef={viewWaveRef} {...waveData} />
+            {waveData &&
               (repliesLoading ? (
                 <Loading className='mt-5' />
               ) : (
                 <AnimatePresence mode='popLayout'>
-                  {repliesData?.map((tweet) => (
-                    <Tweet {...tweet} key={tweet.id} />
+                  {repliesData?.map((wave) => (
+                    <Wave {...wave} key={wave.id} />
                   ))}
                 </AnimatePresence>
               ))}
@@ -93,7 +93,7 @@ export default function TweetId(): JSX.Element {
   );
 }
 
-TweetId.getLayout = (page: ReactElement): ReactNode => (
+WaveId.getLayout = (page: ReactElement): ReactNode => (
   <ProtectedLayout>
     <MainLayout>
       <HomeLayout>{page}</HomeLayout>

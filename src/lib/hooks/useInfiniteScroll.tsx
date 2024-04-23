@@ -44,8 +44,8 @@ export function useInfiniteScroll<T>(
 ): InfiniteScroll<T> | InfiniteScrollWithUser<T> {
   const { initialSize, stepSize, marginBottom } = options ?? {};
 
-  const [tweetsLimit, setTweetsLimit] = useState(initialSize ?? 20);
-  const [tweetsSize, setTweetsSize] = useState<number | null>(null);
+  const [wavesLimit, setWavesLimit] = useState(initialSize ?? 20);
+  const [wavesSize, setWavesSize] = useState<number | null>(null);
   const [reachedLimit, setReachedLimit] = useState(false);
   const [loadMoreInView, setLoadMoreInView] = useState(false);
 
@@ -54,40 +54,40 @@ export function useInfiniteScroll<T>(
       collection,
       ...[
         ...(queryConstraints ?? []),
-        ...(!reachedLimit ? [limit(tweetsLimit)] : [])
+        ...(!reachedLimit ? [limit(wavesLimit)] : [])
       ]
     ),
     fetchOptions
   );
 
   useEffect(() => {
-    const checkLimit = tweetsSize ? tweetsLimit >= tweetsSize : false;
+    const checkLimit = wavesSize ? wavesLimit >= wavesSize : false;
     setReachedLimit(checkLimit);
-  }, [tweetsSize, tweetsLimit]);
+  }, [wavesSize, wavesLimit]);
 
   useEffect(() => {
     if (reachedLimit) return;
 
-    const setTweetsLength = async (): Promise<void> => {
-      const currentTweetsSize = await getCollectionCount(
+    const setWavesLength = async (): Promise<void> => {
+      const currentWavesSize = await getCollectionCount(
         query(collection, ...(queryConstraints ?? []))
       );
-      setTweetsSize(currentTweetsSize);
+      setWavesSize(currentWavesSize);
     };
 
-    void setTweetsLength();
+    void setWavesLength();
   }, [data?.length]);
 
   useEffect(() => {
     if (reachedLimit) return;
-    if (loadMoreInView) setTweetsLimit(tweetsLimit + (stepSize ?? 20));
+    if (loadMoreInView) setWavesLimit(wavesLimit + (stepSize ?? 20));
   }, [loadMoreInView]);
 
   const makeItInView = (): void => setLoadMoreInView(true);
   const makeItNotInView = (): void => setLoadMoreInView(false);
 
   const isLoadMoreHidden =
-    reachedLimit && (data?.length ?? 0) >= (tweetsSize ?? 0);
+    reachedLimit && (data?.length ?? 0) >= (wavesSize ?? 0);
 
   const LoadMore = useCallback(
     (): JSX.Element => (

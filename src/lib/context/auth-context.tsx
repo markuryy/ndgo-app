@@ -90,15 +90,15 @@ export function AuthContextProvider({
           followers: [],
           createdAt: serverTimestamp(),
           updatedAt: null,
-          totalTweets: 0,
+          totalWaves: 0,
           totalPhotos: 0,
-          pinnedTweet: null,
+          pinnedWave: null,
           coverPhotoURL: null
         };
 
         const userStatsData: WithFieldValue<Stats> = {
           likes: [],
-          tweets: [],
+          waves: [],
           updatedAt: null
         };
 

@@ -2,28 +2,28 @@ import { AnimatePresence } from 'framer-motion';
 import { doc, query, where, orderBy } from 'firebase/firestore';
 import { useCollection } from '@lib/hooks/useCollection';
 import { useDocument } from '@lib/hooks/useDocument';
-import { tweetsCollection } from '@lib/firebase/collections';
+import { wavesCollection } from '@lib/firebase/collections';
 import { useUser } from '@lib/context/user-context';
 import { UserLayout, ProtectedLayout } from '@components/layout/common-layout';
 import { MainLayout } from '@components/layout/main-layout';
 import { SEO } from '@components/common/seo';
 import { UserDataLayout } from '@components/layout/user-data-layout';
 import { UserHomeLayout } from '@components/layout/user-home-layout';
-import { Tweet } from '@components/tweet/tweet';
+import { Wave } from '@components/wave/wave';
 import { Loading } from '@components/ui/loading';
-import { StatsEmpty } from '@components/tweet/stats-empty';
-import { TweetWithParent } from '@components/tweet/tweet-with-parent';
+import { StatsEmpty } from '@components/wave/stats-empty';
+import { WaveWithParent } from '@components/wave/wave-with-parent';
 import type { ReactElement, ReactNode } from 'react';
 
 export default function UserWithReplies(): JSX.Element {
   const { user } = useUser();
 
-  const { id, name, username, pinnedTweet } = user ?? {};
+  const { id, name, username, pinnedWave } = user ?? {};
 
   const { data: pinnedData } = useDocument(
-    doc(tweetsCollection, pinnedTweet ?? 'null'),
+    doc(wavesCollection, pinnedWave ?? 'null'),
     {
-      disabled: !pinnedTweet,
+      disabled: !pinnedWave,
       allowNull: true,
       includeUser: true
     }
@@ -31,7 +31,7 @@ export default function UserWithReplies(): JSX.Element {
 
   const { data, loading } = useCollection(
     query(
-      tweetsCollection,
+      wavesCollection,
       where('createdBy', '==', id),
       orderBy('createdAt', 'desc')
     ),
@@ -41,7 +41,7 @@ export default function UserWithReplies(): JSX.Element {
   return (
     <section>
       <SEO
-        title={`Tweets with replies by ${name as string} (@${
+        title={`Waves with replies by ${name as string} (@${
           username as string
         }) / Twitter`}
       />
@@ -49,15 +49,15 @@ export default function UserWithReplies(): JSX.Element {
         <Loading className='mt-5' />
       ) : !data ? (
         <StatsEmpty
-          title={`@${username as string} hasn't tweeted`}
-          description='When they do, their Tweets will show up here.'
+          title={`@${username as string} hasn't waveed`}
+          description='When they do, their Waves will show up here.'
         />
       ) : (
         <AnimatePresence mode='popLayout'>
           {pinnedData && (
-            <Tweet pinned {...pinnedData} key={`pinned-${pinnedData.id}`} />
+            <Wave pinned {...pinnedData} key={`pinned-${pinnedData.id}`} />
           )}
-          <TweetWithParent data={data} />
+          <WaveWithParent data={data} />
         </AnimatePresence>
       )}
     </section>

@@ -15,12 +15,12 @@ const UNITS: Units = {
 
 export function formatDate(
   targetDate: Timestamp,
-  mode: 'tweet' | 'message' | 'full' | 'joined'
+  mode: 'wave' | 'message' | 'full' | 'joined'
 ): string {
   const date = targetDate.toDate();
 
   if (mode === 'full') return getFullTime(date);
-  if (mode === 'tweet') return getPostTime(date);
+  if (mode === 'wave') return getPostTime(date);
   if (mode === 'joined') return getJoinedTime(date);
 
   return getShortTime(date);
