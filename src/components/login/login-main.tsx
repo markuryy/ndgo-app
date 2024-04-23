@@ -12,8 +12,8 @@ export function LoginMain(): JSX.Element {
         <NextImage
           imgClassName='object-cover'
           blurClassName='bg-accent-blue'
-          src='/assets/twitter-banner.png'
-          alt='Twitter banner'
+          src='/assets/ndgo-banner.png'
+          alt='ndgo banner'
           layout='fill'
           useSkeleton
         />
