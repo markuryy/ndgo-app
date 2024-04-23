@@ -15,7 +15,7 @@ import { usersCollection } from '@lib/firebase/collections';
 import { UserCard } from '@components/user/user-card';
 import { Loading } from '@components/ui/loading';
 import { Error } from '@components/ui/error';
-import { variants } from './aside-trends';
+import { AsideTrends } from './aside-trends';
 
 export function Suggestions(): JSX.Element {
   const { randomSeed } = useAuth();
@@ -40,7 +40,7 @@ export function Suggestions(): JSX.Element {
       {adminLoading || suggestionsLoading ? (
         <Loading className='flex h-52 items-center justify-center p-4' />
       ) : suggestionsData ? (
-        <motion.div className='inner:px-4 inner:py-3' {...variants}>
+        <motion.div className='inner:px-4 inner:py-3' {...AsideTrends}>
           <h2 className='text-xl font-bold'>Who to follow</h2>
           {adminData && <UserCard {...adminData} />}
           {suggestionsData?.map((userData) => (
