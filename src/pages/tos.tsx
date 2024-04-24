@@ -1,8 +1,7 @@
 import { SEO } from '@components/common/seo';
 import { MainContainer } from '@components/home/main-container';
 import { Loading } from '@components/ui/loading';
-import { ProtectedLayout } from '@components/layout/common-layout';
-import { MainLayout } from '@components/layout/main-layout';
+import { AuthLayout } from '@components/layout/auth-layout';
 import { markdownToHtml } from '../lib/markdownToHtml';
 import type { ReactElement, ReactNode } from 'react';
 
@@ -28,9 +27,7 @@ export async function getStaticProps(): Promise<{ props: { content: string } }> 
 }
 
 TermsOfService.getLayout = (page: ReactElement): ReactNode => (
-  <ProtectedLayout>
-    <MainLayout>
-      {page}
-    </MainLayout>
-  </ProtectedLayout>
+  <AuthLayout>
+    {page}
+  </AuthLayout>
 );
