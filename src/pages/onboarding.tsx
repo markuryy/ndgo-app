@@ -11,7 +11,11 @@ export default function Onboarding(): JSX.Element {
 
   return (
     <>
-      <SEO title='Onboarding / ndgo' />
+      <SEO
+        title='Onboarding / ndgo'
+        description="You've been invited to join the ndgo beta"
+        image='/assets/ndgo-banner.png'
+      />
       <main className='min-h-screen bg-black text-white overflow-hidden relative'>
         <div className='absolute inset-0 bg-dots opacity-10'></div>
         <div className='max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8 relative z-10'>
