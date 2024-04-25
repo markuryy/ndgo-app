@@ -32,7 +32,7 @@ const ImageMetadataDisplay: React.FC<ImageMetadataProps> = ({ images }) => {
       setMetadataList(metadataResults);
     };
 
-    fetchMetadata();
+    fetchMetadata().catch(error => console.error("Failed to fetch metadata:", error));
   }, [images]);
 
   return (
