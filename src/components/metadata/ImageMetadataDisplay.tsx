@@ -3,7 +3,7 @@ import { extract, parse, stringify } from 'stable-diffusion-image-metadata';
 
 interface ImageData {
   url: string;
-  id: string;
+  id: string; // Assuming each image object has an 'id' and 'url' field
 }
 
 interface ImageMetadataProps {
@@ -20,8 +20,7 @@ const ImageMetadataDisplay: React.FC<ImageMetadataProps> = ({ images }) => {
   useEffect(() => {
     const fetchMetadata = async () => {
       const metadataPromises = images.map(async (image) => {
-        const imageUrl = `/api/proxy/${encodeURIComponent(image.url)}`; // Use local proxy
-        const [parameters, isParameters] = await extract(imageUrl);
+        const [parameters, isParameters] = await extract(image.url);
         if (isParameters) {
           const metadata = parse(parameters);
           return metadata;
@@ -33,7 +32,7 @@ const ImageMetadataDisplay: React.FC<ImageMetadataProps> = ({ images }) => {
       setMetadataList(metadataResults);
     };
 
-    fetchMetadata().catch(error => console.error("Failed to fetch metadata:", error));
+    fetchMetadata();
   }, [images]);
 
   return (
