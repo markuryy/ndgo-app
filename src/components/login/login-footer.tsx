@@ -1,7 +1,6 @@
 const footerLinks = [
-  ['About', 'https://about.ndgo.io'],
-  ['Privacy Policy', 'https://ndgo.io/tos'],
-  ['Settings', 'https://ndgo.io/settings']
+  ['Terms of Service', 'https://ndgo.io/tos'],
+  ['Privacy Policy', 'https://ndgo.io/privacy']
 ] as const;
 
 export function LoginFooter(): JSX.Element {
