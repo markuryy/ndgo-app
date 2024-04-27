@@ -8,7 +8,6 @@ import { MainLayout } from '@components/layout/main-layout';
 import { SEO } from '@components/common/seo';
 import { MainContainer } from '@components/home/main-container';
 import { Input } from '@components/input/input';
-import { UpdateUsername } from '@components/home/update-username';
 import { MainHeader } from '@components/home/main-header';
 import { Wave } from '@components/wave/wave';
 import { Loading } from '@components/ui/loading';
@@ -32,7 +31,6 @@ export default function Home(): JSX.Element {
         title='Home'
         className='flex items-center justify-between'
       >
-        <UpdateUsername />
       </MainHeader>
       {!isMobile && <Input />}
       <section className='mt-0.5 xs:mt-0'>

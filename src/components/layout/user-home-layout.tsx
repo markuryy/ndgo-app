@@ -14,6 +14,7 @@ import { ToolTip } from '@components/ui/tooltip';
 import { FollowButton } from '@components/ui/follow-button';
 import { variants } from '@components/user/user-header';
 import { UserEditProfile } from '@components/user/user-edit-profile';
+import { UpdateUsername } from '@components/home/update-username';
 import { UserShare } from '@components/user/user-share';
 import type { LayoutProps } from './common-layout';
 
@@ -70,7 +71,12 @@ export function UserHomeLayout({ children }: LayoutProps): JSX.Element {
               <div className='flex justify-between'>
                 <UserHomeAvatar profileData={profileData} />
                 {isOwner ? (
-                  <UserEditProfile />
+                  <div className='flex gap-2'>
+                    <div>
+                      <UpdateUsername />
+                    </div>
+                    <UserEditProfile />
+                  </div>
                 ) : (
                   <div className='flex gap-2 self-start'>
                     <UserShare username={userData.username} />
